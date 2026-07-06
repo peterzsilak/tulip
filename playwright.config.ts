@@ -12,8 +12,8 @@ const config = defineConfig({
   testMatch: ['**/*.spec.ts', '**/*.setup.ts'],
   /* Run tests in files in parallel */
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env['CI'],
+  /* Fail the build on CI if test.only was left in source. */
+  forbidOnly: Boolean(process.env['CI']),
   /* Retry on CI only */
   retries: process.env['CI'] ? 2 : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -72,7 +72,7 @@ const config = defineConfig({
   // },
 });
 
-// Set workers only in CI mode to avoid undefined value issues with strict typing
+// Set workers to 1 in CI (strict typing forbids `workers: undefined`)
 if (process.env['CI']) {
   config.workers = 1;
 }
