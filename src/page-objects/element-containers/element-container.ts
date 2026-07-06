@@ -47,4 +47,3 @@ export class ElementContainer<T extends ElementContainer<T>> {
     return this.root.count();
   }
 }
-

@@ -3,26 +3,21 @@ import { Locator, Page } from '@playwright/test';
 import { CartItem } from '@/page-objects/element-containers/cart-item';
 
 export class CartPage {
-  private readonly container: Locator;
+  readonly items: CartItem;
   private readonly list: Locator;
-  private readonly cartItem: CartItem;
   private readonly continueShoppingButton: Locator;
   private readonly checkoutButton: Locator;
 
   constructor(page: Page) {
-    this.container = page.getByTestId('cart-contents-container');
-    this.list = this.container.getByTestId('cart-list');
-	this.cartItem = new CartItem(this.list.getByTestId('inventory-item'));
-    this.continueShoppingButton = this.container.getByTestId('continue-shopping');
-    this.checkoutButton = this.container.getByTestId('checkout');
+    const container = page.getByTestId('cart-contents-container');
+    this.list = container.getByTestId('cart-list');
+    this.items = new CartItem(this.list.getByTestId('inventory-item'));
+    this.continueShoppingButton = container.getByTestId('continue-shopping');
+    this.checkoutButton = container.getByTestId('checkout');
   }
 
-  async getAllItems(): Promise<CartItem[]> {
-    return this.cartItem.all();
-  }
-
-  async getItemByName(name: string): Promise<CartItem> {
-    return this.cartItem.filter({
+  getItemByName(name: string): CartItem {
+    return this.items.filter({
       has: this.list.getByTestId('inventory-item-name').getByText(name, { exact: true }),
     });
   }
