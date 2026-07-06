@@ -8,13 +8,13 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/page-objects/*": ["./page-objects/*"],
-      "@/fixtures/*": ["./fixtures/*"],
-      "@/services/*": ["./services/*"],
-      "@/config/*": ["./config/*"],
-      "@/utils/*": ["./utils/*"],
-      "@/tests/*": ["./tests/*"]
+      "@/*": ["./src/*"],
+      "@/page-objects/*": ["./src/page-objects/*"],
+      "@/fixtures/*": ["./src/fixtures/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/tests/*": ["./src/tests/*"]
     },
     "declaration": true,
     "declarationMap": true,
