@@ -15,7 +15,7 @@ export class InventoryItem extends ElementContainer<InventoryItem> {
     this.name = this.root.getByTestId('inventory-item-name');
     this.description = this.root.getByTestId('inventory-item-desc');
     this.price = this.root.getByTestId('inventory-item-price');
-    this.actionButton = this.root.getByRole('button');
+    this.actionButton = this.root.locator('button.btn_inventory');
   }
 
   async addToCart(): Promise<void> {

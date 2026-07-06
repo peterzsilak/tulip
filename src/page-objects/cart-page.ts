@@ -18,7 +18,7 @@ export class CartPage {
 
   getItemByName(name: string): CartItem {
     return this.items.filter({
-      has: this.list.getByTestId('inventory-item-name').getByText(name, { exact: true }),
+      hasText: name,
     });
   }
 

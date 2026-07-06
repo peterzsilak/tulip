@@ -14,7 +14,7 @@ export class InventoryPage {
 
   getItemByName(name: string): InventoryItem {
     return this.items.filter({
-      has: this.list.getByTestId('inventory-item-name').getByText(name, { exact: true }),
+      hasText: name,
     });
   }
 
