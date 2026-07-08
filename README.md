@@ -44,6 +44,50 @@ Open the HTML report:
 npx playwright show-report
 ```
 
+## Architecture
+
+The framework uses fixture-based dependency injection with Page Objects.
+`page-init.fixture.ts` provides reusable page instances, while
+`authenticated.fixture.ts` adds automatic login/logout for authenticated flows.
+Tests stay focused on business assertions, and UI interaction details live in
+Page Objects and reusable element containers.
+
+```mermaid
+classDiagram
+  class PlaywrightTest {
+    +spec files
+  }
+
+  class AuthenticatedFixture {
+    +auto login/logout
+  }
+
+  class PageInitFixture {
+    +loginPage
+    +inventoryPage
+    +cartPage
+    +checkoutPage
+    +checkoutSummaryPage
+    +checkoutCompletePage
+  }
+
+  class PageObject {
+    +actions()
+    +locators
+  }
+
+  class ElementContainer {
+    +filter()
+    +count()
+    +all()
+  }
+
+  PlaywrightTest --> AuthenticatedFixture : uses
+  AuthenticatedFixture --> PageInitFixture : extends
+  PageInitFixture --> PageObject : injects
+  PageObject --> ElementContainer : composes
+```
+
 ## Project structure
 
 ```text
