@@ -5,6 +5,7 @@ import { CartItem } from '@/page-objects/element-containers/cart-item';
 export class CheckoutSummaryPage {
   private readonly container: Locator;
   private readonly list: Locator;
+  readonly items: CartItem;
   readonly paymentInfoValue: Locator;
   readonly shippingInfoValue: Locator;
   readonly subtotalLabel: Locator;
@@ -16,6 +17,7 @@ export class CheckoutSummaryPage {
   constructor(page: Page) {
     this.container = page.getByTestId('checkout-summary-container');
     this.list = this.container.getByTestId('cart-list');
+    this.items = new CartItem(this.list.getByTestId('inventory-item'));
     this.paymentInfoValue = this.container.getByTestId('payment-info-value');
     this.shippingInfoValue = this.container.getByTestId('shipping-info-value');
     this.subtotalLabel = this.container.getByTestId('subtotal-label');
@@ -23,10 +25,6 @@ export class CheckoutSummaryPage {
     this.totalLabel = this.container.getByTestId('total-label');
     this.cancelButton = this.container.getByTestId('cancel');
     this.finishButton = this.container.getByTestId('finish');
-  }
-
-  get items(): CartItem {
-    return new CartItem(this.list.getByTestId('inventory-item'));
   }
 
   getItemByName(name: string): CartItem {
