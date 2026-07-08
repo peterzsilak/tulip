@@ -17,8 +17,8 @@ export class HeaderPage {
     this.productSortContainer = page.getByTestId('product-sort-container');
   }
 
-  async openMenu() {
-	  await this.hamburgerButton.click()
+  async openMenu(): Promise<void> {
+    await this.hamburgerButton.click();
   }
 
   async sortProducts(sort: ProductSort): Promise<void> {

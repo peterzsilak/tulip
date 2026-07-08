@@ -12,7 +12,7 @@ const config = defineConfig({
   testMatch: ['**/*.spec.ts', '**/*.setup.ts'],
   /* Run tests in files in parallel */
   fullyParallel: true,
-  /* Run 3 workers so chromium/firefox/webkit can execute at the same time */
+  /* Run projects in parallel while keeping local resource usage reasonable */
   workers: 6,
   /* Fail the build on CI if test.only was left in source. */
   forbidOnly: Boolean(process.env['CI']),
@@ -28,32 +28,36 @@ const config = defineConfig({
     trace: 'on-first-retry',
   },
 
-  /* Configure projects for major browsers */
+  /* Configure desktop and mobile projects */
   projects: [
     {
-      name: 'chromium',
+      name: 'desktop-chromium',
+      grep: /@desktop/,
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
-      name: 'firefox',
+      name: 'desktop-firefox',
+      grep: /@desktop/,
       use: { ...devices['Desktop Firefox'] },
     },
 
     {
-      name: 'webkit',
+      name: 'desktop-webkit',
+      grep: /@desktop/,
       use: { ...devices['Desktop Safari'] },
     },
 
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    {
+      name: 'mobile-chromium',
+      grep: /@mobile/,
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'mobile-webkit',
+      grep: /@mobile/,
+      use: { ...devices['iPhone 12'] },
+    },
 
     /* Test against branded browsers. */
     // {
