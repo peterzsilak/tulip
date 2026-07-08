@@ -1,12 +1,9 @@
 import { expect } from '@playwright/test';
 
-import { loadCredential } from '@/config/env-loader';
-import { test } from '@/fixture/page-init.fixture';
+import { test } from '@/fixture/authenticated.fixture';
 
 test.describe('A user can', () => {
-  test.beforeEach(async ({ page, loginPage, inventoryPage }) => {
-    await page.goto('/');
-    await loginPage.authenticate(loadCredential());
+  test.beforeEach(async ({ inventoryPage }) => {
     await expect(
       inventoryPage.items.root,
       'Inventory should show items after login',

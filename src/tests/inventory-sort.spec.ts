@@ -1,15 +1,9 @@
 import { expect } from '@playwright/test';
 
-import { loadCredential } from '@/config/env-loader';
 import { ProductSort } from '@/config/product-sort';
-import { test } from '@/fixture/page-init.fixture';
+import { test } from '@/fixture/authenticated.fixture';
 
 test.describe('A user can sort inventory items', () => {
-  test.beforeEach(async ({ page, loginPage }) => {
-    await page.goto('/');
-    await loginPage.authenticate(loadCredential());
-  });
-
   test('sort items A to Z', async ({ inventoryPage, headerPage }) => {
     await headerPage.sortProducts(ProductSort.NAME_ASC);
 

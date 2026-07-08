@@ -10,7 +10,7 @@ import { InventoryPage } from '@/page-objects/inventory-page';
 import { LeftMenuPage } from '@/page-objects/left-menu-page';
 import { LoginPage } from '@/page-objects/login-page';
 
-interface CustomFixtures {
+export interface CustomFixtures {
   loginPage: LoginPage;
   headerPage: HeaderPage;
   leftMenuPage: LeftMenuPage;

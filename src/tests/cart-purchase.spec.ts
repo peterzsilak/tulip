@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { loadCredential } from '@/config/env-loader';
-import { test } from '@/fixture/page-init.fixture';
+import { test } from '@/fixture/authenticated.fixture';
 
 const CHECKOUT_INFO = { firstName: 'John', lastName: 'Doe', postalCode: '12345' };
 
@@ -14,18 +13,6 @@ const parseCurrencyAmount = (value: string, label: string): number => {
 };
 
 test.describe('A user can', () => {
-  test.beforeEach(async ({ page, loginPage }) => {
-    await page.goto('/')
-    await expect( loginPage.loginContainer ).toBeVisible();
-    await loginPage.authenticate(loadCredential());
-  })
-
-  test.afterEach(async ({ headerPage, leftMenuPage, loginPage }) => {
-    await headerPage.openMenu();
-    await leftMenuPage.logout();
-    await expect( loginPage.loginContainer ).toBeVisible();
-  })
-
   test('add a few items to their cart and successfully purchase them', async ({
     inventoryPage,
     headerPage,
