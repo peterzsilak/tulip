@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '.env'), quiet: true });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -12,6 +12,8 @@ const config = defineConfig({
   testMatch: ['**/*.spec.ts', '**/*.setup.ts'],
   /* Run tests in files in parallel */
   fullyParallel: true,
+  /* Run 3 workers so chromium/firefox/webkit can execute at the same time */
+  workers: 6,
   /* Fail the build on CI if test.only was left in source. */
   forbidOnly: Boolean(process.env['CI']),
   /* Retry on CI only */
@@ -71,10 +73,5 @@ const config = defineConfig({
   //   reuseExistingServer: !process.env['CI'],
   // },
 });
-
-// Set workers to 1 in CI (strict typing forbids `workers: undefined`)
-if (process.env['CI']) {
-  config.workers = 1;
-}
 
 export default config;
