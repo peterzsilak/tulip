@@ -1,6 +1,14 @@
 import { Locator, Page } from '@playwright/test';
 
 import { CartItem } from '@/page-objects/element-containers/cart-item';
+import { parseCurrencyAmount } from '@/utils/currency';
+
+export interface OrderDetails {
+  readonly items: readonly string[];
+  readonly paymentMethod: string;
+  readonly shippingMethod: string;
+  readonly expectedSubtotal: number;
+}
 
 export class CheckoutSummaryPage {
   readonly root: Locator;
@@ -41,12 +49,11 @@ export class CheckoutSummaryPage {
     return this.subtotalLabel.innerText();
   }
 
-  async getTax(): Promise<string> {
-    return this.taxLabel.innerText();
-  }
-
-  async getTotal(): Promise<string> {
-    return this.totalLabel.innerText();
+  async verifyOrderDetails(details: OrderDetails): Promise<void> {
+    await this.verifyItems(details.items);
+    await this.verifyInfoText(this.paymentInfoValue, details.paymentMethod, 'payment');
+    await this.verifyInfoText(this.shippingInfoValue, details.shippingMethod, 'shipping');
+    await this.verifySubtotal(details.expectedSubtotal);
   }
 
   async cancel(): Promise<void> {
@@ -55,5 +62,32 @@ export class CheckoutSummaryPage {
 
   async finish(): Promise<void> {
     await this.finishButton.click();
+  }
+
+  private async verifyItems(itemNames: readonly string[]): Promise<void> {
+    for (const itemName of itemNames) {
+      const count = await this.getItemByName(itemName).count();
+      if (count !== 1) {
+        throw new Error(`Expected exactly one "${itemName}" item in summary, got ${count}.`);
+      }
+    }
+  }
+
+  private async verifyInfoText(field: Locator, expected: string, fieldName: string): Promise<void> {
+    const actual = await field.innerText();
+    if (actual !== expected) {
+      throw new Error(
+        `Summary ${fieldName} info mismatch. Expected "${expected}", got "${actual}".`,
+      );
+    }
+  }
+
+  private async verifySubtotal(expectedSubtotal: number): Promise<void> {
+    const actualSubtotal = parseCurrencyAmount(await this.getSubtotal(), 'Summary subtotal label');
+    if (Math.abs(actualSubtotal - expectedSubtotal) > 0.01) {
+      throw new Error(
+        `Summary subtotal mismatch. Expected ${expectedSubtotal}, got ${actualSubtotal}.`,
+      );
+    }
   }
 }

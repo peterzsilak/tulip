@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 
+import { produtcs } from '@/config/produtcs';
 import { testTags } from '@/config/test-tags';
 import { test } from '@/fixture/authenticated.fixture';
 
@@ -16,9 +17,9 @@ test.describe('A user can', () => {
     { tag: [testTags.regression, testTags.desktop, testTags.mobile] },
     async ({ inventoryPage, headerPage, cartPage }) => {
       // Arrange - add 3 items
-      const backpack = inventoryPage.getItemByName('Sauce Labs Backpack');
-      const bikeLight = inventoryPage.getItemByName('Sauce Labs Bike Light');
-      const jacket = inventoryPage.getItemByName('Sauce Labs Fleece Jacket');
+      const backpack = inventoryPage.getItemByName(produtcs.backpack.name);
+      const bikeLight = inventoryPage.getItemByName(produtcs.bikeLight.name);
+      const jacket = inventoryPage.getItemByName(produtcs.jacket.name);
 
       await backpack.addToCart();
       await bikeLight.addToCart();
@@ -28,7 +29,7 @@ test.describe('A user can', () => {
 
       // Act - navigate to cart and remove one item
       await headerPage.cartButton.click();
-      await cartPage.getItemByName('Sauce Labs Backpack').remove();
+      await cartPage.getItemByName(produtcs.backpack.name).remove();
 
       // Assert - remaining items and badge count
       await expect(headerPage.cartBadge, 'Cart badge should show 2 items after removal').toHaveText(
@@ -36,11 +37,11 @@ test.describe('A user can', () => {
       );
       await expect(cartPage.items.root, 'Cart should contain exactly 2 items').toHaveCount(2);
       await expect(
-        cartPage.items.filter({ hasText: 'Sauce Labs Bike Light' }).root,
+        cartPage.items.filter({ hasText: produtcs.bikeLight.name }).root,
         'Bike Light should still be in the cart',
       ).toBeVisible();
       await expect(
-        cartPage.items.filter({ hasText: 'Sauce Labs Fleece Jacket' }).root,
+        cartPage.items.filter({ hasText: produtcs.jacket.name }).root,
         'Fleece Jacket should still be in the cart',
       ).toBeVisible();
     },

@@ -14,6 +14,10 @@ export class ElementContainer<T extends ElementContainer<T>> {
     this.root = locator;
   }
 
+  get locator(): Locator {
+    return this.root;
+  }
+
   first(): T {
     return new (this.constructor as new (locator: Locator) => T)(this.root.first());
   }
