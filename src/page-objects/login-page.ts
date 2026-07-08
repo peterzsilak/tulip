@@ -3,16 +3,18 @@ import { Locator, Page } from '@playwright/test';
 import { Credential } from '@/config/credential';
 
 export class LoginPage {
-  readonly loginContainer: Locator
+  readonly root: Locator;
+  readonly loginContainer: Locator;
   private readonly usernameInput: Locator;
   private readonly passwordInput: Locator;
   private readonly loginButton: Locator;
 
   constructor(page: Page) {
-    this.loginContainer = page.getByTestId('login-container');
-    this.usernameInput = page.getByTestId('username');
-    this.passwordInput = page.getByTestId('password');
-    this.loginButton = page.getByTestId('login-button');
+    this.root = page.getByTestId('login-container');
+    this.loginContainer = this.root;
+    this.usernameInput = this.root.getByTestId('username');
+    this.passwordInput = this.root.getByTestId('password');
+    this.loginButton = this.root.getByTestId('login-button');
   }
 
   async authenticate(credential: Credential): Promise<void> {

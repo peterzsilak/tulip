@@ -3,12 +3,13 @@ import { Locator, Page } from '@playwright/test';
 import { InventoryItem } from '@/page-objects/element-containers/inventory-item';
 
 export class InventoryPage {
+  readonly root: Locator;
   readonly items: InventoryItem;
   private readonly list: Locator;
 
   constructor(page: Page) {
-    const container = page.getByTestId('inventory-container');
-    this.list = container.getByTestId('inventory-list');
+    this.root = page.getByTestId('inventory-container');
+    this.list = this.root.getByTestId('inventory-list');
     this.items = new InventoryItem(this.list.getByTestId('inventory-item'));
   }
 

@@ -3,7 +3,7 @@ import { Locator, Page } from '@playwright/test';
 import { CheckoutInfoPage } from '@/page-objects/checkout-info-page';
 
 export class CheckoutPage {
-  private readonly container: Locator;
+  readonly root: Locator;
   private readonly firstNameInput: Locator;
   private readonly lastNameInput: Locator;
   private readonly postalCodeInput: Locator;
@@ -11,12 +11,12 @@ export class CheckoutPage {
   private readonly continueButton: Locator;
 
   constructor(page: Page) {
-    this.container = page.getByTestId('checkout-info-container');
-    this.firstNameInput = this.container.getByTestId('firstName');
-    this.lastNameInput = this.container.getByTestId('lastName');
-    this.postalCodeInput = this.container.getByTestId('postalCode');
-    this.cancelButton = this.container.getByTestId('cancel');
-    this.continueButton = this.container.getByTestId('continue');
+    this.root = page.getByTestId('checkout-info-container');
+    this.firstNameInput = this.root.getByTestId('firstName');
+    this.lastNameInput = this.root.getByTestId('lastName');
+    this.postalCodeInput = this.root.getByTestId('postalCode');
+    this.cancelButton = this.root.getByTestId('cancel');
+    this.continueButton = this.root.getByTestId('continue');
   }
 
   async fillInfo(info: CheckoutInfoPage): Promise<void> {

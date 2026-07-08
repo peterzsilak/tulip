@@ -3,17 +3,18 @@ import { Locator, Page } from '@playwright/test';
 import { CartItem } from '@/page-objects/element-containers/cart-item';
 
 export class CartPage {
+  readonly root: Locator;
   readonly items: CartItem;
   private readonly list: Locator;
   private readonly continueShoppingButton: Locator;
   private readonly checkoutButton: Locator;
 
   constructor(page: Page) {
-    const container = page.getByTestId('cart-contents-container');
-    this.list = container.getByTestId('cart-list');
+    this.root = page.getByTestId('cart-contents-container');
+    this.list = this.root.getByTestId('cart-list');
     this.items = new CartItem(this.list.getByTestId('inventory-item'));
-    this.continueShoppingButton = container.getByTestId('continue-shopping');
-    this.checkoutButton = container.getByTestId('checkout');
+    this.continueShoppingButton = this.root.getByTestId('continue-shopping');
+    this.checkoutButton = this.root.getByTestId('checkout');
   }
 
   getItemByName(name: string): CartItem {
