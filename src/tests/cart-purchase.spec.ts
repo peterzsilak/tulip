@@ -1,17 +1,9 @@
 import { expect } from '@playwright/test';
 
+import { checkoutInfo } from '@/config/checkout-info';
 import { testTags } from '@/config/test-tags';
 import { test } from '@/fixture/authenticated.fixture';
-
-const CHECKOUT_INFO = { firstName: 'John', lastName: 'Doe', postalCode: '12345' };
-
-const parseCurrencyAmount = (value: string, label: string): number => {
-  const [, amountText] = value.split('$');
-  if (amountText === undefined) {
-    throw new Error(`${label} should contain a dollar amount.`);
-  }
-  return Number.parseFloat(amountText);
-};
+import { parseCurrencyAmount } from '@/utils/currency';
 
 test.describe('A user can', () => {
   test(
@@ -59,7 +51,7 @@ test.describe('A user can', () => {
         'Cart should contain exactly one bike light.',
       ).toBe(1);
       await cartPage.checkout();
-      await checkoutPage.fillInfo(CHECKOUT_INFO);
+      await checkoutPage.fillInfo(checkoutInfo);
       await checkoutPage.continue();
 
       expect(
