@@ -19,7 +19,9 @@ const config = defineConfig({
   /* Retry on CI only */
   retries: process.env['CI'] ? 2 : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html'], ['list']],
+  reporter: process.env['CI']
+    ? [['github'], ['list'], ['html'], ['junit', { outputFile: 'test-results/junit.xml' }]]
+    : [['html'], ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: 'https://www.saucedemo.com/',

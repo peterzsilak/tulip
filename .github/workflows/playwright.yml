@@ -25,6 +25,13 @@ jobs:
     - uses: actions/upload-artifact@v5
       if: ${{ !cancelled() }}
       with:
+        name: junit-results
+        path: test-results/junit.xml
+        if-no-files-found: ignore
+        retention-days: 7
+    - uses: actions/upload-artifact@v5
+      if: ${{ !cancelled() }}
+      with:
         name: playwright-report
         path: playwright-report/
-        retention-days: 30
+        retention-days: 7
