@@ -29,6 +29,12 @@ export class CheckoutSummaryPage {
     return new CartItem(this.list.getByTestId('inventory-item'));
   }
 
+  getItemByName(name: string): CartItem {
+    return this.items.filter({
+      hasText: name,
+    });
+  }
+
   async getAllItems(): Promise<CartItem[]> {
     return this.items.all();
   }
