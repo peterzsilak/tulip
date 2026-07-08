@@ -4,56 +4,63 @@ import { ProductSort } from '@/config/product-sort';
 import { testTags } from '@/config/test-tags';
 import { test } from '@/fixture/authenticated.fixture';
 
-test.describe('A user can sort inventory items', () => {
-  test(
-    'sort items A to Z',
-    { tag: [testTags.regression, testTags.desktop, testTags.mobile] },
-    async ({ inventoryPage, headerPage }) => {
-      await headerPage.sortProducts(ProductSort.NAME_ASC);
+interface SortCase {
+  readonly title: string;
+  readonly sort: ProductSort;
+  readonly type: 'name' | 'price';
+  readonly assertionMessage: string;
+}
 
-      const names = await inventoryPage.getItemNames();
-      const sorted = [...names].sort((a, b) => a.localeCompare(b));
+const sortCases: readonly SortCase[] = [
+  {
+    title: 'sort items A to Z',
+    sort: ProductSort.NAME_ASC,
+    type: 'name',
+    assertionMessage: 'Items should be sorted alphabetically A to Z',
+  },
+  {
+    title: 'sort items Z to A',
+    sort: ProductSort.NAME_DESC,
+    type: 'name',
+    assertionMessage: 'Items should be sorted alphabetically Z to A',
+  },
+  {
+    title: 'sort items by price low to high',
+    sort: ProductSort.PRICE_ASC,
+    type: 'price',
+    assertionMessage: 'Items should be sorted by price low to high',
+  },
+  {
+    title: 'sort items by price high to low',
+    sort: ProductSort.PRICE_DESC,
+    type: 'price',
+    assertionMessage: 'Items should be sorted by price high to low',
+  },
+];
 
-      expect(names, 'Items should be sorted alphabetically A to Z').toEqual(sorted);
-    },
-  );
+test.describe(
+  'A user can sort inventory items',
+  { tag: [testTags.regression, testTags.desktop, testTags.mobile] },
+  () => {
+    for (const sortCase of sortCases) {
+      test(sortCase.title, async ({ inventoryPage, headerPage }) => {
+        await headerPage.sortProducts(sortCase.sort);
 
-  test(
-    'sort items Z to A',
-    { tag: [testTags.regression, testTags.desktop, testTags.mobile] },
-    async ({ inventoryPage, headerPage }) => {
-      await headerPage.sortProducts(ProductSort.NAME_DESC);
+        if (sortCase.type === 'name') {
+          const names = await inventoryPage.getItemNames();
+          const sortedNames = [...names].sort((a, b) =>
+            sortCase.sort === ProductSort.NAME_ASC ? a.localeCompare(b) : b.localeCompare(a),
+          );
+          expect(names, sortCase.assertionMessage).toEqual(sortedNames);
+          return;
+        }
 
-      const names = await inventoryPage.getItemNames();
-      const sorted = [...names].sort((a, b) => b.localeCompare(a));
-
-      expect(names, 'Items should be sorted alphabetically Z to A').toEqual(sorted);
-    },
-  );
-
-  test(
-    'sort items by price low to high',
-    { tag: [testTags.regression, testTags.desktop, testTags.mobile] },
-    async ({ inventoryPage, headerPage }) => {
-      await headerPage.sortProducts(ProductSort.PRICE_ASC);
-
-      const prices = await inventoryPage.getItemPrices();
-      const sorted = [...prices].sort((a, b) => a - b);
-
-      expect(prices, 'Items should be sorted by price low to high').toEqual(sorted);
-    },
-  );
-
-  test(
-    'sort items by price high to low',
-    { tag: [testTags.regression, testTags.desktop, testTags.mobile] },
-    async ({ inventoryPage, headerPage }) => {
-      await headerPage.sortProducts(ProductSort.PRICE_DESC);
-
-      const prices = await inventoryPage.getItemPrices();
-      const sorted = [...prices].sort((a, b) => b - a);
-
-      expect(prices, 'Items should be sorted by price high to low').toEqual(sorted);
-    },
-  );
-});
+        const prices = await inventoryPage.getItemPrices();
+        const sortedPrices = [...prices].sort((a, b) =>
+          sortCase.sort === ProductSort.PRICE_ASC ? a - b : b - a,
+        );
+        expect(prices, sortCase.assertionMessage).toEqual(sortedPrices);
+      });
+    }
+  },
+);
