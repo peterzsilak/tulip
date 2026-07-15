@@ -42,7 +42,7 @@ list of clicks. Use `CODING_STANDARDS.md` as the only coding-rule source while p
 
 3. **Design the Test Architecture (Clean Code & Design Patterns)**
    - **Page Objects** — identify each page/widget and the PO representing it (actions/locators only).
-   - **Element Containers** — flag reusable widgets that should extend `ElementContainer<T>` (DRY).
+   - **Element Containers** — flag reusable widgets that should extend the base container class defined in `CODING_STANDARDS.md` (DRY).
    - **Controllers** — flag multi-step, cross-page workflows for the Controller pattern.
    - **Fixtures** — note which POs/Controllers/services must be injected via fixtures.
    - **Locator strategy** — recommend `getByTestId`/role locators; flag missing stable hooks.
