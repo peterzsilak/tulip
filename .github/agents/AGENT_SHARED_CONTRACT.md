@@ -42,9 +42,13 @@ Before coding/review/planning work, load and apply this file.
 - Load this contract and apply its source-of-truth split.
 - Confirm scope and artifacts/commands/paths from `PROJECT.md`.
 - Confirm approval boundary from `AGENTS.md` before any remote/tracker action.
+- If the task matches MCP-required scenarios from `AGENTS.md`, prepare MCP evidence per `PROJECT.md`.
 
 ### Exit Gate (baseline)
 
 - Keep decisions traceable to the correct source-of-truth file.
 - Run/verify quality gates from `PROJECT.md` when code changes are made.
 - Do not perform push/PR/comment/tracker-write action without explicit user approval.
+- For MCP-required scenarios, include the MCP evidence block from `PROJECT.md` in the handoff/output.
+- In CI contexts, use artifact-based equivalent evidence from `PROJECT.md` when MCP server access is
+  unavailable.

@@ -33,10 +33,12 @@ Load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md) before c
 
 ### Preflight additions
 - Confirm scope, target artifact, and code paths from `PROJECT.md`.
+- Identify whether the stage requires MCP evidence per `AGENTS.md`.
 
 ### Exit Gate additions
 - Each stage gate is explicitly checked before moving forward.
 - Quality gates command and test command status from `PROJECT.md` are captured in the handoff.
+- MCP-required stages include the MCP evidence block from `PROJECT.md`.
 
 ## The Lifecycle (sequence matters)
 
@@ -54,14 +56,16 @@ ticket intake ─▶ plan ─▶ generate ─▶ heal ─▶ verify ─▶ local
 2. **Plan stage** — delegate to `playwright-test-planner`. Gate: a plan exists (default:
    plan file from `PROJECT.md`),
    scenarios are independent/idempotent (F.I.R.S.T.), and it names the POs/Containers/Controllers
-   to use. Do **not** proceed until the plan is complete and pattern-aware.
+   to use. For new flow discovery, require MCP evidence before accepting the plan gate.
+   Do **not** proceed until the plan is complete and pattern-aware.
    - **Sizing:** if the plan implies a PR too large to review quickly, have `jira-workflow`
      **propose** a sub-task breakdown (creation is gated on approval) before generating.
 3. **Generate stage** — hand the plan to `playwright-test-generator`. Gate: tests + page objects
    created under paths from `PROJECT.md`, no anti-patterns, locators per `CODING_STANDARDS.md`,
    DI via fixture path from `PROJECT.md`.
 4. **Heal stage** — if anything fails, hand off to `playwright-test-healer`. Gate: failures fixed
-   **without weakening assertions** or changing intended behavior.
+   **without weakening assertions** or changing intended behavior. For flaky/locator/network-state
+   failures, require MCP evidence in the healer handoff.
 5. **Verify** — run quality gates and test commands from `PROJECT.md`. Green per
    `CODING_STANDARDS.md` and the process gates in `AGENTS.md`.
 6. **Local review stage** — delegate to `code-reviewer`. Gate: every finding is **discussed with the

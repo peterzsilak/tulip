@@ -58,6 +58,28 @@ See the canonical path definitions in `PROJECT.md`.
 
 ---
 
+## 4.1 MCP Usage Policy (Process Rule)
+
+Playwright MCP is a required diagnostic aid in the following cases:
+
+- flaky/intermittent test triage
+- locator ambiguity or unstable selector behavior
+- new flow discovery before finalizing a plan
+- network/state mismatch between expected and observed behavior
+
+When MCP is required, the stage output must include an **MCP evidence block** (defined in
+`PROJECT.md`) and decisions must trace back to that evidence.
+
+Execution boundary:
+
+- **Local agent runs:** MCP evidence is mandatory for MCP-required scenarios.
+- **CI runs:** MCP server startup is not required. CI must provide artifact-based equivalent evidence
+  (defined in `PROJECT.md`) for diagnosis.
+
+MCP augments the workflow; it does not replace quality gates, review gates, or approval boundaries.
+
+---
+
 ## 5. Approval Boundary (Non-negotiable)
 
 The boundary is **local vs remote**:

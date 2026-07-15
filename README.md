@@ -135,6 +135,57 @@ Project agents are defined in `.github/agents/*.agent.md` and reusable skills in
 - Agents orchestrate planning, generation, healing, review, git/PR flow, and tracker workflow.
 - Skills provide focused implementation playbooks (locators, assertions, fixtures, POs, etc.).
 
+## Playwright MCP (required for local diagnostics)
+
+For MCP-required scenarios (defined in `AGENTS.md`), local agent runs should use Playwright MCP and
+produce the MCP evidence block format from `PROJECT.md`.
+
+Install prerequisites:
+
+```bash
+npm install
+npx playwright install
+```
+
+Playwright MCP server command:
+
+```bash
+npx @playwright/mcp@latest
+```
+
+### VS Code setup
+
+1. Use an MCP-capable Copilot/agent extension build.
+2. Add a Playwright MCP server entry in your MCP client settings (workspace or user scope).
+3. Set the command to `npx @playwright/mcp@latest`.
+4. Reload VS Code and run an agent task that calls Playwright tools (for example snapshot/navigate).
+
+Example MCP server entry:
+
+```json
+{
+  "servers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+### WebStorm setup
+
+1. Open **Settings** → **Tools** → **AI Assistant / MCP** (name may vary by version).
+2. Add a new MCP server named `playwright`.
+3. Set command to `npx` and arguments to `@playwright/mcp@latest`.
+4. Save, restart the IDE if needed, then run an agent task that uses Playwright tools.
+
+### CI note
+
+CI does not need to start an MCP server. For MCP-required scenarios, CI uses artifact-based
+equivalent evidence (`test-results/junit.xml`, `playwright-report/`, retry traces), as defined in
+`PROJECT.md`.
+
 ## Notes
 
 - Use absolute imports with the `@/` alias.

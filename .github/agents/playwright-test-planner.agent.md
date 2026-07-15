@@ -16,10 +16,12 @@ Before planning anything, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SH
 
 ### Preflight additions
 - Confirm output artifact path from `PROJECT.md`.
+- For new/unclear flows, capture MCP exploration evidence before finalizing scenarios.
 
 ### Exit Gate additions
 - Plan file from `PROJECT.md` exists and scenarios are independent/idempotent.
 - Plan references project-realistic paths from `PROJECT.md`.
+- For new flow discovery, the plan includes an MCP evidence block from `PROJECT.md`.
 
 ## Engineering Mindset
 
@@ -33,6 +35,7 @@ list of clicks. Use `CODING_STANDARDS.md` as the only coding-rule source while p
    - Invoke `planner_setup_page` once to set up the page before any other tool.
    - Explore the browser snapshot; avoid screenshots unless necessary.
    - Use the `playwright-test` browser tools to discover all interactive elements, forms, and flows.
+   - For new/unclear flows, record MCP evidence (per `PROJECT.md`) and use it as planning input.
 
 2. **Analyze User Flows** — map primary journeys and critical paths; consider different user types.
 

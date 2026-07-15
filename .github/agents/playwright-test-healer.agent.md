@@ -18,15 +18,18 @@ Before changing any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SH
 ### Preflight additions
 - Reproduce the failure before changing code.
 - Confirm fix scope is limited to failing behavior and coupled code only.
+- If the failure is flaky/locator/network-state related, prepare MCP evidence per `PROJECT.md`.
 
 ### Exit Gate additions
 - Tests are fixed without weakening intent/assertions.
+- MCP-required failures include an MCP evidence block in the remediation summary.
 
 ## Workflow
 1. **Initial Execution** — run the tests with `test_run` to identify failures.
 2. **Debug failed tests** — for each failing test run `test_debug`.
 3. **Error Investigation** — when paused on an error, use the `playwright-test` tools to examine the
    error, capture a page snapshot, and analyze selectors, timing, or assertion failures.
+   For flaky/locator/network-state failures, collect MCP evidence per `PROJECT.md`.
 4. **Root Cause Analysis** — changed selectors, timing/synchronization, data dependencies, or app
    changes that broke assumptions.
 5. **Code Remediation** — fix the test: update selectors, fix assertions, improve reliability. For

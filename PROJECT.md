@@ -39,6 +39,29 @@ When starting a new project, update this file first.
 - Workflow file: `.github/workflows/playwright.yml`
 - CI runs static gates + Playwright tests.
 
+## MCP Runtime Setup (Local)
+
+- MCP server package: `@playwright/mcp`
+- Recommended command: `npx @playwright/mcp@latest`
+- MCP-required scenarios are defined in `AGENTS.md`.
+
+## MCP Evidence Contract
+
+Use this evidence block format when `AGENTS.md` marks MCP usage as required:
+
+- Reproduction steps
+- Locator/accessibility snapshot findings
+- Relevant network/console observations
+- Decision/fix derived from the evidence
+
+## CI Evidence Equivalence (No MCP Server Required)
+
+In CI, accept artifact-based evidence for MCP-required scenarios:
+
+- JUnit results: `test-results/junit.xml`
+- Playwright HTML report: `playwright-report/`
+- Retry trace files captured by Playwright (`trace: on-first-retry`)
+
 ## Required Environment Variables
 
 - Test credentials:

@@ -8,6 +8,10 @@ description: Use when choosing or fixing a locator. Enforces the getByTestId →
 Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
 Use `CODING_STANDARDS.md` for locator rules. Pick the **highest-priority** locator that works.
 
+## MCP evidence (when ambiguous)
+If locator behavior is ambiguous/unstable, use MCP snapshot/accessibility data and document the
+evidence block from `PROJECT.md` before choosing the final locator.
+
 ## Decision order
 1. **`getByTestId`** — `page.getByTestId('todo.input')` (preferred, stable).
 2. **Role / Label / Placeholder** — `getByRole('button', { name: 'Add' })`, `getByLabel`, `getByPlaceholder`.

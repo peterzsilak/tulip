@@ -11,6 +11,10 @@ Use mocking to make tests deterministic when the real backend is slow, unstable,
 but prefer real API seeding (`state-seeding-via-api`) when feasible. Apply YAGNI: mock only what the
 test needs.
 
+## MCP evidence (for network mismatch)
+When observed network behavior differs from test assumptions, capture MCP network/console evidence
+using the block from `PROJECT.md`, then adjust mock/seed/assertion intentionally.
+
 ## Patterns
 - **Stub a response** for determinism:
   ```ts

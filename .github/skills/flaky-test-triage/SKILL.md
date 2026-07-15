@@ -9,6 +9,9 @@ Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
 Use `CODING_STANDARDS.md` for anti-flakiness rules and `PROJECT.md` for commands.
 **Never suppress flakiness** — diagnose the root cause.
 
+## MCP evidence (required)
+For flaky triage, capture MCP evidence using the block from `PROJECT.md` and base the fix on it.
+
 ## Diagnosis order
 1. **Reproduce** — run the single test repeatedly (e.g. `--repeat-each=20`) and with `--retries=0` to
    confirm the flake and read the trace.
