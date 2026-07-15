@@ -36,7 +36,7 @@ export class ElementContainer<T extends ElementContainer<T>> {
 
   async all(): Promise<T[]> {
     const elements = await this.root.all();
-    return elements.map((element) => new (this.constructor as new (root: Locator) => T)(element));
+    return elements.map((el) => new (this.constructor as new (root: Locator) => T)(el));
   }
 
   async click(): Promise<void> {
