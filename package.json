@@ -11,7 +11,6 @@
     "mcp:playwright": "playwright-mcp",
     "test": "playwright test",
     "show-report": "playwright show-report",
-    "pretest": "npm run check",
     "check:all": "npm run check && npm run test",
     "ci": "npm run check:all"
   },

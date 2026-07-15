@@ -2,7 +2,7 @@ import { test as base, expect } from '@playwright/test';
 
 import { CartPage } from '@/page-objects/cart-page';
 import { CheckoutCompletePage } from '@/page-objects/checkout-complete-page';
-import { CheckoutPage } from '@/page-objects/checkout-page';
+import { CheckoutInfoPage } from '@/page-objects/checkout-info-page';
 import { CheckoutSummaryPage } from '@/page-objects/checkout-summary-page';
 import { FooterPage } from '@/page-objects/footer-page';
 import { HeaderPage } from '@/page-objects/header-page';
@@ -16,7 +16,7 @@ export interface CustomFixtures {
   leftMenuPage: LeftMenuPage;
   inventoryPage: InventoryPage;
   cartPage: CartPage;
-  checkoutPage: CheckoutPage;
+  checkoutInfoPage: CheckoutInfoPage;
   checkoutSummaryPage: CheckoutSummaryPage;
   checkoutCompletePage: CheckoutCompletePage;
   footerPage: FooterPage;
@@ -38,8 +38,8 @@ export const test = base.extend<CustomFixtures>({
   cartPage: async ({ page }, use) => {
     await use(new CartPage(page));
   },
-  checkoutPage: async ({ page }, use) => {
-    await use(new CheckoutPage(page));
+  checkoutInfoPage: async ({ page }, use) => {
+    await use(new CheckoutInfoPage(page));
   },
   checkoutSummaryPage: async ({ page }, use) => {
     await use(new CheckoutSummaryPage(page));

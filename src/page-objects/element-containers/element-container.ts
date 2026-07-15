@@ -10,8 +10,8 @@ export interface FilterOptions {
 export class ElementContainer<T extends ElementContainer<T>> {
   readonly root: Locator;
 
-  constructor(locator: Locator) {
-    this.root = locator;
+  constructor(root: Locator) {
+    this.root = root;
   }
 
   get locator(): Locator {
@@ -19,24 +19,24 @@ export class ElementContainer<T extends ElementContainer<T>> {
   }
 
   first(): T {
-    return new (this.constructor as new (locator: Locator) => T)(this.root.first());
+    return new (this.constructor as new (root: Locator) => T)(this.root.first());
   }
 
   last(): T {
-    return new (this.constructor as new (locator: Locator) => T)(this.root.last());
+    return new (this.constructor as new (root: Locator) => T)(this.root.last());
   }
 
   nth(index: number): T {
-    return new (this.constructor as new (locator: Locator) => T)(this.root.nth(index));
+    return new (this.constructor as new (root: Locator) => T)(this.root.nth(index));
   }
 
   filter(options: FilterOptions): T {
-    return new (this.constructor as new (locator: Locator) => T)(this.root.filter(options));
+    return new (this.constructor as new (root: Locator) => T)(this.root.filter(options));
   }
 
   async all(): Promise<T[]> {
     const elements = await this.root.all();
-    return elements.map((el) => new (this.constructor as new (locator: Locator) => T)(el));
+    return elements.map((el) => new (this.constructor as new (root: Locator) => T)(el));
   }
 
   async click(): Promise<void> {

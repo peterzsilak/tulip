@@ -11,7 +11,7 @@ test.describe('A user can', () => {
       inventoryPage,
       headerPage,
       cartPage,
-      checkoutPage,
+      checkoutInfoPage,
       checkoutSummaryPage,
       checkoutCompletePage,
     }) => {
@@ -38,8 +38,8 @@ test.describe('A user can', () => {
       ).toHaveCount(1);
       await cartPage.checkout();
 
-      await checkoutPage.fillInfo(checkoutInfo);
-      await checkoutPage.continue();
+      await checkoutInfoPage.fillInfo(checkoutInfo);
+      await checkoutInfoPage.continue();
 
       await expect(
         checkoutSummaryPage.getItemByName(products.backpack.name).root,
