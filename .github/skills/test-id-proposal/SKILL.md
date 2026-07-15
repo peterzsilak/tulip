@@ -5,8 +5,9 @@ description: Use when an element lacks a stable locator hook. Proposes a dot-sep
 
 # data-testid Proposal
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §3. When no `getByTestId`/role locator is reliable, propose a
-`data-testid` instead of resorting to brittle CSS/XPath.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for locator policy. When no `getByTestId`/role locator is reliable, propose
+a `data-testid` instead of resorting to brittle CSS/XPath.
 
 ## Rules
 - Format: **`"component.element"`** — dot-separated, lowercase (e.g. `"todo.input"`,

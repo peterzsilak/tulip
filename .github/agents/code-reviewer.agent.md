@@ -10,7 +10,7 @@ anything is committed or pushed, and you review the working changes against the 
 
 ## Mandatory Reading (Source of Truth)
 
-Apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+Apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 
 ## Agent-Specific Checklist Additions
 

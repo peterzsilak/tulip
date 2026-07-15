@@ -5,8 +5,9 @@ description: Use to Arrange test state through the API/service layer instead of 
 
 # State Seeding via API
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §2 (`services/`, `api/`), §5, §6 (F.I.R.S.T.). Set up
-preconditions through the fastest reliable layer; reserve the UI for the behavior actually under test.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for F.I.R.S.T./DI constraints and `PROJECT.md` for path conventions.
+Set up preconditions through the fastest reliable layer; reserve the UI for the behavior under test.
 
 ## Principle
 - **Arrange via API/service**, **Act via UI**, **Assert via UI (or state)**. Don't click through five
@@ -14,7 +15,8 @@ preconditions through the fastest reliable layer; reserve the UI for the behavio
 - Each test seeds its **own** state and cleans up — no shared mutable state between tests.
 
 ## Steps
-1. Put HTTP clients in `api/<resource>.client.ts`; expose them through a service in `services/`.
+1. Put HTTP clients in an API client path defined by your project; expose them through services path
+   conventions from `PROJECT.md`.
 2. Inject the service via a fixture (see the `fixture-wiring` skill) — never call raw `request` in a spec.
 3. Seed preconditions in the Arrange phase (or a `beforeEach`/worker fixture); tear down what you create.
 4. Keep credentials/tokens in **environment variables**, never in code.

@@ -8,9 +8,9 @@ Before coding/review/planning work, load and apply this file.
 
 ## Source-of-Truth Boundary
 
-1. **Coding and test-automation standards** live in `CODING_STANDARDS.md`.
-2. **Process/workflow/approval policy** lives in `AGENTS.md`.
-3. **Project-specific values** (paths, commands, branches, env vars) live in `PROJECT.md`.
+1. **Coding and test-automation standards** live in [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md).
+2. **Process/workflow/approval policy** lives in [`AGENTS.md`](../../AGENTS.md).
+3. **Project-specific values** (paths, commands, branches, env vars) live in [`PROJECT.md`](../../PROJECT.md).
 
 ## Required Load Order
 

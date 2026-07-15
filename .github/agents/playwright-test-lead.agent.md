@@ -27,7 +27,7 @@ handoff artifacts clean and the contract between stages explicit.
 
 ## Mandatory Reading (Source of Truth)
 
-Load and apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md) before coordinating anything.
+Load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md) before coordinating anything.
 
 ## Agent-Specific Checklist Additions
 

@@ -5,12 +5,13 @@ description: Use when a test needs structured input data. Provides the Builder p
 
 # Test Data Builder
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §6, §8. Build test data with the **Builder pattern** instead of
-scattering hardcoded literals across tests. Apply KISS/YAGNI — add a builder only when the shape is
-reused or has ≥3 meaningful fields.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for builder/pattern constraints and `PROJECT.md` for paths.
+Build test data with the **Builder pattern** instead of scattering hardcoded literals across tests.
+Apply KISS/YAGNI — add a builder only when the shape is reused or has ≥3 meaningful fields.
 
 ## Steps
-1. Create `config/test-data/<entity>.builder.ts` (kebab-case).
+1. Create `<config-path-from-PROJECT.md>/test-data/<entity>.builder.ts` (kebab-case).
 2. Define a typed model (`interface`, no `any`) and a builder with **sensible defaults** so a valid
    object can be produced with zero arguments.
 3. Expose fluent `with<Field>(value)` methods returning `this`; finish with `build()`.

@@ -11,7 +11,7 @@ post inline review comments and apply fixes.
 
 ## Mandatory Reading (Source of Truth)
 
-Apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+Apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 
 ## Agent-Specific Checklist Additions
 

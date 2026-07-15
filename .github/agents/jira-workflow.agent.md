@@ -12,7 +12,7 @@ with explicit user approval**.
 
 ## Mandatory Reading (Source of Truth)
 
-Apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+Apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 
 ## Agent-Specific Checklist Additions
 

@@ -5,12 +5,13 @@ description: Use when creating or refactoring a Page Object or reusable widget. 
 
 # Page Object Authoring
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §4 (Page Object Architecture) as law. This skill is the
-step-by-step recipe.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for page-object rules and `PROJECT.md` for path conventions.
+This skill is the step-by-step recipe.
 
 ## Steps
-1. Create the file in `page-objects/<feature>.po.ts` (kebab-case). Reusable widget →
-   `page-objects/containers/<widget>-container.ts`.
+1. Create the file in `<page-objects-path-from-PROJECT.md>/<feature>.po.ts` (kebab-case). Reusable widget →
+   `<page-objects-path-from-PROJECT.md>/element-containers/<widget>-container.ts`.
 2. A reusable widget **extends `ElementContainer<T>`**; a page-level PO receives `page` in its
    constructor.
 3. Declare locators as **`readonly` lazy** properties scoped to the PO root, `getByTestId`-first.

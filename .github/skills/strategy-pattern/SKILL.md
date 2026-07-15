@@ -5,7 +5,8 @@ description: Use when interchangeable behaviors must be selected at runtime — 
 
 # Strategy Pattern
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §4, §8 (SOLID: Open/Closed, Liskov, Dependency Inversion).
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for SOLID and pattern gatekeeping rules.
 
 ## Gatekeeper (read first)
 Introduce a Strategy **only when interchangeable implementations behind one interface actually exist**

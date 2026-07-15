@@ -10,7 +10,7 @@ and predictably, following the project's conventions exactly.
 
 ## Mandatory Reading (Source of Truth)
 
-Load and apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+Load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 Commit messages **must** follow Conventional Commits.
 
 ## Agent-Specific Checklist Additions

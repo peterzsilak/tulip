@@ -5,15 +5,16 @@ description: Use for flows and interactions that span across pages — composing
 
 # Controller Pattern
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §4–§5. Use a Controller **only for flows/interactions that span
-across pages** (KISS/YAGNI). An interaction confined to one page belongs in that page's Page Object —
-it does **not** justify a Controller.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for controller rules and `PROJECT.md` for path conventions.
+Use a Controller **only for flows/interactions that span across pages** (KISS/YAGNI). An interaction
+confined to one page belongs in that page's Page Object — it does **not** justify a Controller.
 
 > The Controller is the **Facade over UI Page Objects**. For a Facade over **API clients/services**,
 > use the `facade-pattern` skill instead.
 
 ## Steps
-1. Create `page-objects/controllers/<workflow>.controller.ts` (kebab-case).
+1. Create `<page-objects-path-from-PROJECT.md>/controllers/<workflow>.controller.ts` (kebab-case).
 2. The constructor receives the Page Objects it orchestrates (injected, not constructed).
 3. Expose **one method per business workflow** with an intention-revealing name; each method is a
    high-level narrative that delegates to PO actions (Stepdown Rule, single level of abstraction).

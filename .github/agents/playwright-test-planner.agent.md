@@ -10,7 +10,7 @@ plans that result in **clean, maintainable, pattern-driven automation code**.
 
 ## Mandatory Reading (Source of Truth)
 
-Before planning anything, load and apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+Before planning anything, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 
 ## Agent-Specific Checklist Additions
 

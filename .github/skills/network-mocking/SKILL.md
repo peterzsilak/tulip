@@ -5,9 +5,11 @@ description: Use when a test must stub, intercept, or assert network traffic. Pr
 
 # Network Mocking
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §6 (Repeatable), §10. Use mocking to make tests deterministic
-when the real backend is slow, unstable, or hard to seed — but prefer real API seeding
-(`state-seeding-via-api`) when feasible. Apply YAGNI: mock only what the test needs.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for repeatability/waiting constraints and `PROJECT.md` for command context.
+Use mocking to make tests deterministic when the real backend is slow, unstable, or hard to seed —
+but prefer real API seeding (`state-seeding-via-api`) when feasible. Apply YAGNI: mock only what the
+test needs.
 
 ## Patterns
 - **Stub a response** for determinism:

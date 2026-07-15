@@ -1,12 +1,13 @@
 ---
 name: test-suite-review
-description: Use when reviewing a Playwright test or PR. Audits the change against the AGENTS.md Definition of Done and the anti-pattern blocklist, surfacing only issues that genuinely matter.
+description: Use when reviewing a Playwright test or PR. Audits the change against CODING_STANDARDS.md and workflow policy from AGENTS.md, surfacing only issues that genuinely matter.
 ---
 
 # Test Suite Review
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §11–§12 as the review rubric. High signal-to-noise: flag real
-problems (bugs, fragility, rule violations), not style nits a formatter would fix.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` as the review rubric and `AGENTS.md` for process policy.
+High signal-to-noise: flag real problems (bugs, fragility, rule violations), not style nits.
 
 ## Review checklist (Definition of Done)
 - **Static gates:** `npm run typecheck` and `npm run lint` both pass with zero errors; no unjustified
@@ -14,7 +15,7 @@ problems (bugs, fragility, rule violations), not style nits a formatter would fi
 - **Architecture:** POs expose actions/locators only (no assertions/business logic); reusable widgets
   extend `ElementContainer<T>`; cross-page flows use a Controller; everything injected via fixtures
   (no `new PageObject(page)` in specs).
-- **Dependency Inversion & loose coupling (top priority, §5.1):** consumers depend on abstractions/
+- **Dependency Inversion & loose coupling (top priority):** consumers depend on abstractions/
   interfaces, not concrete classes; collaborators are constructor-injected; **no** `new` of collaborators
   inside consumers, **no** singletons/global mutable state, **no** service locators; each unit is
   mockable/replaceable in isolation; layers don't leak (tests don't touch raw `request`/`page.locator`,

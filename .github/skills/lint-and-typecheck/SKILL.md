@@ -5,8 +5,9 @@ description: Use after writing or changing any test code to enforce the static q
 
 # Lint & Type-check Gates
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §9, §11.1, §12. These gates are **mandatory** — code is not done
-until both are green.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for gate expectations and `PROJECT.md` for command values.
+These gates are **mandatory** — code is not done until both are green.
 
 ## Commands
 - `npm run typecheck` — `tsc --noEmit` in strict mode (zero TS errors).
@@ -15,8 +16,8 @@ until both are green.
 - `npm run lint:fix` — auto-fix trivial/formatting issues, then review the diff.
 
 ## Workflow
-1. After writing or changing any `.ts` under `tests/`, `page-objects/`, `fixtures/`, `services/`,
-   `api/`, `config/`, or `utils/`, run `npm run check`.
+1. After writing or changing code under project source paths from `PROJECT.md`, run the quality gates
+   command from `PROJECT.md`.
 2. **Fix the code**, not the rule. Resolve every TS and ESLint error.
 3. Re-run until both gates report zero errors.
 4. Only then consider the change complete (it also runs in CI as the `static-checks` job).

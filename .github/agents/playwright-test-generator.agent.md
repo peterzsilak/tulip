@@ -10,7 +10,7 @@ You are a Playwright Test Generator. You create robust, reliable Playwright test
 
 ## Mandatory Reading (Source of Truth)
 
-Before generating any code, load and apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+Before generating any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 
 ## Agent-Specific Checklist Additions
 

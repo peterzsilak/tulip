@@ -5,7 +5,8 @@ description: Use when choosing or fixing a locator. Enforces the getByTestId →
 
 # Locator Strategy
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §3. Pick the **highest-priority** locator that works.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for locator rules. Pick the **highest-priority** locator that works.
 
 ## Decision order
 1. **`getByTestId`** — `page.getByTestId('todo.input')` (preferred, stable).
@@ -15,8 +16,8 @@ Follow [`AGENTS.md`](../../../AGENTS.md) §3. Pick the **highest-priority** loca
 
 ## Rules
 - The repo standard attribute is **`data-testid`** (Playwright default). Keep using
-  `getByTestId(...)` in tests/POs; if a different attribute is ever adopted, configure it once in
-  Playwright and use it consistently.
+  `getByTestId(...)` in test files and Page Objects; if a different attribute is ever adopted,
+  configure it once in Playwright and use it consistently.
 - Locators are **lazy** (evaluated at action time) and **scoped to the PO root** — never the bare `page`
   inside a PO, never `page.locator(...)` in a test.
 - Prefer semantic locators over raw text. Use `getByText(...)` only when role/label/placeholder cannot

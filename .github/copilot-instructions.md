@@ -8,7 +8,7 @@
 ## Mandatory Reading (Source of Truth)
 
 Before producing any code or test plan, you **MUST** load and apply
-[`AGENT_SHARED_CONTRACT.md`](../AGENT_SHARED_CONTRACT.md).
+[`AGENT_SHARED_CONTRACT.md`](./agents/AGENT_SHARED_CONTRACT.md).
 
 ---
 
@@ -28,7 +28,7 @@ Before producing any code or test plan, you **MUST** load and apply
 - Project-dependent values are defined **only** in `PROJECT.md`.
 - Do not hardcode paths/commands/branches in agent logic; read them from `PROJECT.md`.
 - Process/orchestration/approval policy is defined in `AGENTS.md`.
-- Shared boundary/checklist text for agents is defined in `AGENT_SHARED_CONTRACT.md`.
+- Shared boundary/checklist text for agents is defined in `.github/agents/AGENT_SHARED_CONTRACT.md`.
 
 ## Tool Mapping Note
 

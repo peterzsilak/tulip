@@ -5,7 +5,9 @@ description: Use when a test fails intermittently. A systematic recipe to find t
 
 # Flaky Test Triage
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §10, §11. **Never suppress flakiness** — diagnose the root cause.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for anti-flakiness rules and `PROJECT.md` for commands.
+**Never suppress flakiness** — diagnose the root cause.
 
 ## Diagnosis order
 1. **Reproduce** — run the single test repeatedly (e.g. `--repeat-each=20`) and with `--retries=0` to

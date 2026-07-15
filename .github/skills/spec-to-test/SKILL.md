@@ -1,14 +1,17 @@
 ---
 name: spec-to-test
-description: Use when turning a plan scenario from specs/ into a Playwright *.spec.ts. Enforces one test per file, AAA structure, tags, fixture-injected Page Objects, and web-first assertions.
+description: Use when turning a plan scenario into a Playwright *.spec.ts. Enforces one test per file, AAA structure, tags, fixture-injected Page Objects, and web-first assertions.
 ---
 
 # Spec → Test
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §6–§7. Convert one plan scenario into one clean test file.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for test design/assertion rules and `PROJECT.md` for target paths.
+Convert one plan scenario into one clean test file.
 
 ## Steps
-1. Create `tests/<feature>/<scenario>.spec.ts` (fs-friendly, kebab-case). **One test per file.**
+1. Create `<tests-path-from-PROJECT.md>/<feature>/<scenario>.spec.ts` (fs-friendly, kebab-case).
+   **One test per file.**
 2. Wrap it in a `describe` matching the top-level plan item; the test title matches the scenario name.
 3. Add **tags**: scope (`@smoke|@sanity|@regression`) + platform (`@desktop|@mobile`).
 4. Inject Page Objects/Controllers via **fixtures** — never `new PageObject(page)`.
@@ -19,9 +22,9 @@ Follow [`AGENTS.md`](../../../AGENTS.md) §6–§7. Convert one plan scenario in
 
 ## Shape
 ```ts
-// spec: specs/<plan>.md
-import { test, expect } from '../../fixtures';
-import { TestTags } from '../../config/test-tags';
+// plan: <plan-path-from-PROJECT.md>
+import { test, expect } from '<fixtures-entry-from-PROJECT.md>';
+import { TestTags } from '<test-tags-path-from-PROJECT.md>';
 
 test.describe('Adding New Todos', () => {
   test('Add Valid Todo', { tag: [TestTags.SMOKE, TestTags.DESKTOP] }, async ({ todoPage }) => {

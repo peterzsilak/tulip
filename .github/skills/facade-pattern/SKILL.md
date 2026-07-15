@@ -5,8 +5,9 @@ description: Use when several API clients (or low-level services) should be expo
 
 # Facade Pattern (API / Service Facade)
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §2 (`api/`, `services/`), §5, §8. A Facade gives tests a single,
-simple surface over a complex subsystem of API clients.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for architecture constraints and `PROJECT.md` for path conventions.
+A Facade gives tests a single, simple surface over a complex subsystem of API clients.
 
 > Related: the **Controller pattern** is the Facade over *UI Page Objects*; this skill is the Facade
 > over *API clients / services*. Use this when test setup needs to talk to several backend resources.

@@ -5,7 +5,9 @@ description: Use when writing or reviewing test assertions. Enforces web-first a
 
 # Assertion Style
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §7. Assertions live in **tests**, never in Page Objects.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for assertion rules and `PROJECT.md` for project-specific paths/commands.
+Assertions live in **tests**, never in Page Objects.
 
 ## Rules
 - **Web-first, auto-retrying only:** `expect(locator).toBeVisible()`, `toHaveText()`, `toHaveCount()`.

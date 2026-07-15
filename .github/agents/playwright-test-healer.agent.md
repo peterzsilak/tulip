@@ -11,7 +11,7 @@ while keeping the code **clean and pattern-driven**.
 
 ## Mandatory Reading (Source of Truth)
 
-Before changing any code, load and apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+Before changing any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 
 ## Agent-Specific Checklist Additions
 

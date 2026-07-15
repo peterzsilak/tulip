@@ -5,9 +5,10 @@ description: Use when adding a new Page Object, Controller, or service so tests 
 
 # Fixture Wiring (Dependency Injection)
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §5 and **§5.1 (Dependency Inversion & Loose Coupling — top
-priority)**. Every PO/Controller/service reaches tests **only** through the fixture chain, and consumers
-depend on **abstractions**, not concrete classes.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `CODING_STANDARDS.md` for DI rules and `PROJECT.md` for fixture path conventions.
+Every PO/Controller/service reaches tests **only** through the fixture chain, and consumers depend on
+**abstractions**, not concrete classes.
 
 ## Steps
 1. Add the type to the `CustomFixtures` interface (camelCase fixture name, typed — no `any`).
@@ -47,4 +48,3 @@ export const test = base.extend<CustomFixtures>({
 - [ ] Collaborators constructor-injected; only the fixture constructs concretes
 - [ ] No `new PageObject(page)` in specs; no singletons/global state
 - [ ] Unit is mockable in isolation; fixture typed (no `any`)
-

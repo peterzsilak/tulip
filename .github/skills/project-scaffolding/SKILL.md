@@ -1,22 +1,22 @@
 ---
 name: project-scaffolding
-description: Use once to bootstrap the test architecture — page-objects/, fixtures/, services/, config/ with the ElementContainer<T> base class and TestTags/TimeConfig enums referenced across the rules.
+description: Use once to bootstrap the test architecture from PROJECT.md paths, with the ElementContainer<T> base class and TestTags/TimeConfig enums referenced across the rules.
 ---
 
 # Project Scaffolding
 
-Follow [`AGENTS.md`](../../../AGENTS.md) §2. Create the skeleton that the agents and other skills assume
-exists, so generated tests import real building blocks. Create directories **only when used** (YAGNI) —
-this skill creates the foundational ones.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
+Use `PROJECT.md` as the source for path scaffolding and `CODING_STANDARDS.md` for design constraints.
+Create directories **only when used** (YAGNI) — this skill creates foundational ones.
 
 ## Steps
-1. Create folders: `page-objects/`, `page-objects/containers/`, `page-objects/controllers/`,
-   `fixtures/`, `services/`, `config/`, `utils/`.
+1. Create folders from `PROJECT.md` path definitions (tests, page-objects, fixtures, services, config, utils).
 2. Add the `ElementContainer<T>` base class, `TestTags`, and `TimeConfig` (templates below).
-3. Add a `fixtures/index.ts` that re-exports an extended `test`/`expect` (see the `fixture-wiring` skill).
+3. Add an index file under the fixture path from `PROJECT.md` that re-exports extended `test`/`expect`
+   (see the `fixture-wiring` skill).
 4. Keep everything `strict`, no `any`.
 
-## `page-objects/containers/element-container.ts`
+## `<page-objects-path-from-PROJECT.md>/element-containers/element-container.ts`
 ```ts
 import { Locator } from '@playwright/test';
 
@@ -55,4 +55,4 @@ export enum TimeConfig {
 ## Checklist
 - [ ] Folder skeleton created (only foundational dirs)
 - [ ] `ElementContainer<T>`, `TestTags`, `TimeConfig` in place, strict-typed
-- [ ] `fixtures/index.ts` exports extended `test`/`expect`
+- [ ] fixture index file exports extended `test`/`expect`
