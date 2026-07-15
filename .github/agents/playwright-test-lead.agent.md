@@ -40,7 +40,7 @@ Load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md) before c
 - Quality gates command and test command status from `PROJECT.md` are captured in the handoff.
 - MCP-required stages include the MCP evidence block from `PROJECT.md`.
 
-## The Lifecycle (sequence matters)
+## Lifecycle Source of Truth
 
 ```
 ticket intake ─▶ plan ─▶ generate ─▶ heal ─▶ verify ─▶ local review ─▶ git/PR ─▶ board move
@@ -49,51 +49,18 @@ ticket intake ─▶ plan ─▶ generate ─▶ heal ─▶ verify ─▶ local
  → tasks   (PROJECT)  (PROJECT)     (PROJECT)          (PROJECT)        squash/PR  → Code Review
 ```
 
-1. **Intake** — clarify scope with the user. If the work originates from a ticket, delegate to
-   `jira-workflow` to read the story and extract tasks/acceptance criteria. Also confirm environment
-   (TEST/QA real API vs. ALPHA/PROD mock-only) and target tags. When implementation starts, the board
-   move to **In Progress** is handled by `jira-workflow` (**gated on user approval**).
-2. **Plan stage** — delegate to `playwright-test-planner`. Gate: a plan exists (default:
-   plan file from `PROJECT.md`),
-   scenarios are independent/idempotent (F.I.R.S.T.), and it names the POs/Containers/Controllers
-   to use. For new flow discovery, require MCP evidence before accepting the plan gate.
-   Do **not** proceed until the plan is complete and pattern-aware.
-   - **Sizing:** if the plan implies a PR too large to review quickly, have `jira-workflow`
-     **propose** a sub-task breakdown (creation is gated on approval) before generating.
-3. **Generate stage** — hand the plan to `playwright-test-generator`. Gate: tests + page objects
-   created under paths from `PROJECT.md`, no anti-patterns, locators per `CODING_STANDARDS.md`,
-   DI via fixture path from `PROJECT.md`.
-4. **Heal stage** — if anything fails, hand off to `playwright-test-healer`. Gate: failures fixed
-   **without weakening assertions** or changing intended behavior. For flaky/locator/network-state
-   failures, require MCP evidence in the healer handoff.
-5. **Verify** — run quality gates and test commands from `PROJECT.md`. Green per
-   `CODING_STANDARDS.md` and the process gates in `AGENTS.md`.
-6. **Local review stage** — delegate to `code-reviewer`. Gate: every finding is **discussed with the
-   user** and an agreed fix-list exists; agreed fixes are applied (by generator/healer) and the gates
-   re-run green. The reviewer never edits or commits.
-7. **Git/PR stage** — delegate to `git-workflow`: rebase onto base branch from `PROJECT.md`, resolve conflicts, Conventional
-   Commits, squash, and open the PR using branch/base defaults from `PROJECT.md`.
-   **Push and PR creation are gated on explicit user approval.** When the PR is raised,
-   `jira-workflow` moves the issue to **Code Review** (also gated). **No agent merges** — the user
-   merges manually on GitHub after 2 approvals.
-8. **PR review stage** — for incoming review comments (own or others' PRs), delegate to `pr-reviewer`:
-   assess validity, draft replies/fixes, and post inline comments via `gh` **only after the user
-   approves the exact text**.
+Use `AGENTS.md` as the lifecycle and approval source of truth. This lead file adds only orchestration
+constraints:
 
-## Approval Gates (must be respected, never bypassed)
+1. enforce stage order and stage gates from `AGENTS.md`;
+2. keep handoff artifacts explicit (`PROJECT.md` paths, MCP evidence block when required);
+3. delegate to the right specialist agent for each stage and verify the produced artifact before
+   moving on.
 
-The boundary is **local vs. remote**. Local work proceeds **without** approval; outbound actions are
-gated. As lead you **surface** the gated actions but never let an agent perform them without the
-user's explicit approval:
-- **No approval needed (local):** planning, generating, healing, **ESLint/TS fixes**, running the
-  gates, reading diffs, and **local commits** (Conventional Commits).
-- **Approval required (remote):**
-  - **Ticket-tracker writes** (create/edit issues or sub-tasks, comments, board transitions) — `jira-workflow`.
-  - **Git push / PRs** (push, force-push, opening/closing/updating PRs) — `git-workflow`.
-  - **PR comments/reviews** (posting comments, submitting reviews) — `pr-reviewer`.
+## Approval Gates
 
-**Local commits are fine; the gate is at `git push`. No development is pushed and no review/comment
-is sent without approval.**
+Apply approval boundaries exactly as defined in `AGENTS.md` (local work is free; remote/tracker
+actions are gated by explicit user approval).
 
 ## How to Hand Off (in VS Code, one agent runs at a time)
 
@@ -114,10 +81,8 @@ You operate as the **lead**. For each stage:
   stage, it must live in the plan/test files, not only in the conversation.
 - **Enforce the gates, don't bypass them.** If the quality gates command from `PROJECT.md` is red, the healer (or generator)
   owns the fix; never relax `tsconfig.json`/`eslint.config.mjs` to force a pass.
-- **Apply KISS/YAGNI to the process too** — for a tiny single-page change, the full
-  intake→plan→generate→heal→review→git cycle may be overkill; say so and run the minimal path.
-- **Never act on the user's behalf without approval** — tracker writes, pushes, and PR comments are all
-  gated (see Approval Gates above).
+- **Apply KISS/YAGNI to the process too** — for a tiny single-page change, keep the flow minimal while
+  preserving stage order and policy gates.
 - **Never introduce secrets** — reference environment variables only.
 
 ## Definition of Done (for the whole lifecycle)

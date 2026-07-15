@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check": "npm run typecheck && npm run lint",
+    "mcp:playwright": "npx @playwright/mcp@latest",
     "test": "playwright test",
     "show-report": "playwright show-report",
     "pretest": "npm run check",

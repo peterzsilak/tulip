@@ -14,8 +14,14 @@ When starting a new project, update this file first.
 - Tests directory: `src/tests/`
 - Page Objects directory: `src/page-objects/`
 - Fixtures directory: `src/fixture/`
+- Services directory: `src/services/`
 - Config directory: `src/config/`
 - Utils directory: `src/utils/`
+
+## Locator/Test ID Source of Truth
+
+- Canonical test-id attribute source of truth: `playwright.config.ts` → `use.testIdAttribute`
+- Current configured attribute: `data-test`
 
 ## Quality and Test Commands
 
@@ -47,12 +53,23 @@ When starting a new project, update this file first.
 
 ## MCP Evidence Contract
 
-Use this evidence block format when `AGENTS.md` marks MCP usage as required:
+Use this concrete template when `AGENTS.md` marks MCP usage as required:
 
-- Reproduction steps
-- Locator/accessibility snapshot findings
-- Relevant network/console observations
-- Decision/fix derived from the evidence
+```md
+### MCP Evidence
+
+1. Reproduction steps
+- <exact steps, environment, and project>
+
+2. Locator/accessibility snapshot findings
+- <snapshot path or copied ARIA findings>
+
+3. Relevant network/console observations
+- <request/response IDs, status, console errors or "none">
+
+4. Decision/fix derived from the evidence
+- <what changed and why this evidence justifies it>
+```
 
 ## CI Evidence Equivalence (No MCP Server Required)
 

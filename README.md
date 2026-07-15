@@ -35,7 +35,7 @@ npm test
 Run a single browser:
 
 ```bash
-npx playwright test --project=chromium
+npx playwright test --project=desktop-chromium
 ```
 
 Open the HTML report:
@@ -94,6 +94,7 @@ classDiagram
 src/
 ├── config/                  # Enums, credentials, env loader, shared config
 ├── fixture/                 # Playwright fixtures and dependency injection
+├── services/                # API/state services for setup and assertions
 ├── page-objects/            # Page Objects and element containers
 │   └── element-containers/  # Reusable widget containers
 └── tests/                   # Playwright specs and setup tests
@@ -138,7 +139,7 @@ Project agents are defined in `.github/agents/*.agent.md` and reusable skills in
 ## Playwright MCP (required for local diagnostics)
 
 For MCP-required scenarios (defined in `AGENTS.md`), local agent runs should use Playwright MCP and
-produce the MCP evidence block format from `PROJECT.md`.
+produce the MCP evidence template from `PROJECT.md`.
 
 Install prerequisites:
 
@@ -153,32 +154,21 @@ Playwright MCP server command:
 npx @playwright/mcp@latest
 ```
 
+Project-level MCP config (checked in):
+
+- `.mcp.json` (single source of truth)
+
 ### VS Code setup
 
 1. Use an MCP-capable Copilot/agent extension build.
-2. Add a Playwright MCP server entry in your MCP client settings (workspace or user scope).
-3. Set the command to `npx @playwright/mcp@latest`.
-4. Reload VS Code and run an agent task that calls Playwright tools (for example snapshot/navigate).
-
-Example MCP server entry:
-
-```json
-{
-  "servers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
+2. Load/import the project-level `.mcp.json` in your MCP settings (workspace scope).
+3. Reload VS Code and run an agent task that calls Playwright tools (for example snapshot/navigate).
 
 ### WebStorm setup
 
 1. Open **Settings** → **Tools** → **AI Assistant / MCP** (name may vary by version).
-2. Add a new MCP server named `playwright`.
-3. Set command to `npx` and arguments to `@playwright/mcp@latest`.
-4. Save, restart the IDE if needed, then run an agent task that uses Playwright tools.
+2. Load/import the project-level `.mcp.json`.
+3. Save, restart the IDE if needed, then run an agent task that uses Playwright tools.
 
 ### CI note
 

@@ -37,32 +37,12 @@ Before producing any code or test plan, you **MUST** load and apply
 
 ## Agent Team (`.github/agents/`)
 
-**Authoring pipeline** — coordinate the specialists through the **lead** in a gated flow
-(plan → generate → heal → verify):
+Agent responsibilities and stage gates are defined in:
+- `AGENTS.md` (process/approval policy),
+- `.github/agents/playwright-test-lead.agent.md` (orchestration),
+- `.github/agents/*.agent.md` (specialist contracts).
 
-- `playwright-test-lead` — orchestrator; sequences the team and enforces the gates.
-- `playwright-test-planner` — produces the plan file defined in `PROJECT.md`.
-- `playwright-test-generator` — implements into test/page-object paths defined in `PROJECT.md`.
-- `playwright-test-healer` — fixes failing tests without weakening assertions.
-
-**Review & delivery** — end-of-dev review, git, and PR handling (all gated on your approval):
-
-- `code-reviewer` — local end-of-dev review against `CODING_STANDARDS.md`; discusses **everything**
-  (what to fix, what to leave) before any change. Never edits or commits.
-- `git-workflow` — update base branch, rebase, resolve conflicts, Conventional-Commit, squash, push,
-  open PR. Confirms before any action in your name.
-- `pr-reviewer` — checks out your/others' PRs, reviews to standard, judges incoming comments,
-  fixes valid ones (own PR only). Posts inline comments via `gh` **only after your explicit approval**.
-
-**Planning intake** — connect a ticket tracker to the delivery flow:
-
-- `jira-workflow` — reads tasks from tracked stories, plans via the planner, splits into sub-tasks
-  when PR size requires, posts status comments, and moves items on the board (Open → In Progress →
-  Code Review). **Never writes, comments, or transitions without your explicit approval.**
-  MCP-first (Atlassian MCP), REST-fallback (env vars only).
-
-Agents are loosely coupled: they hand off via **artifacts** (plan file, test files, diffs/PRs), and
-work is Done only when the quality gates and test commands from `PROJECT.md` are green.
+Keep this file as an index only to avoid lifecycle duplication/drift.
 
 ---
 

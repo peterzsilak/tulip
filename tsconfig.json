@@ -10,7 +10,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/page-objects/*": ["./src/page-objects/*"],
-      "@/fixtures/*": ["./src/fixtures/*"],
+      "@/fixture/*": ["./src/fixture/*"],
       "@/services/*": ["./src/services/*"],
       "@/config/*": ["./src/config/*"],
       "@/utils/*": ["./src/utils/*"],

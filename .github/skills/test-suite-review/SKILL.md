@@ -27,7 +27,8 @@ High signal-to-noise: flag real problems (bugs, fragility, rule violations), not
 - **Timeouts:** no `page.waitForTimeout()`, no `networkidle`; named timeouts from `TimeConfig`.
 - **Types:** no `any`; `readonly` locators; strict enums.
 - **Size:** PO ≤ 300 lines; methods ≤ 20 lines; ≤ 4 params.
-- **Safety:** no secrets/credentials committed; no production-code change beyond approved `data-testid`.
+- **Safety:** no secrets/credentials committed; no production-code change beyond approved test-id
+  attribute additions (as configured in `playwright.config.ts`).
 - **Scope:** refactor XOR feature — not both in one change.
 
 ## Output

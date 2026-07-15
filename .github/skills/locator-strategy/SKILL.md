@@ -19,9 +19,9 @@ evidence block from `PROJECT.md` before choosing the final locator.
 4. **Scoped CSS** (last resort) — `this.root.locator('.todo-item')`, always scoped to the PO root.
 
 ## Rules
-- The repo standard attribute is **`data-testid`** (Playwright default). Keep using
-  `getByTestId(...)` in test files and Page Objects; if a different attribute is ever adopted,
-  configure it once in Playwright and use it consistently.
+- The test-id attribute source of truth is `playwright.config.ts` → `use.testIdAttribute`
+  (currently `data-test`). Keep using `getByTestId(...)`; never hardcode a different attribute name
+  in docs/tests/Page Objects.
 - Locators are **lazy** (evaluated at action time) and **scoped to the PO root** — never the bare `page`
   inside a PO, never `page.locator(...)` in a test.
 - Prefer semantic locators over raw text. Use `getByText(...)` only when role/label/placeholder cannot
@@ -33,5 +33,5 @@ evidence block from `PROJECT.md` before choosing the final locator.
 | ❌ | ✅ |
 |---|---|
 | `page.locator('.btn')` in a test | `this.root.getByTestId('feature.btn')` in a PO |
-| `//div[@class='x']` (XPath) | role/data-testid locator |
+| `//div[@class='x']` (XPath) | role/test-id locator (configured in Playwright) |
 | `.nth(3)` | named constant or `getByRole(..., { name })` |
