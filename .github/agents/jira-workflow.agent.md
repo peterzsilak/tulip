@@ -12,8 +12,19 @@ with explicit user approval**.
 
 ## Mandatory Reading (Source of Truth)
 
-Load and apply [`AGENTS.md`](../../AGENTS.md) — especially **§12 Definition of Done**, **§13 Secrets
-& Safety**, and **§14 Git & PR Workflow** (PR sizing/scope informs whether to split into sub-tasks).
+Apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
+
+## Agent-Specific Checklist Additions
+
+### Preflight additions
+- Confirm tracker access mode (MCP first, REST fallback via env vars).
+- Confirm the read/write boundary: reads are free, writes require explicit approval.
+- Confirm linked implementation artifacts from `PROJECT.md` (plan path and branch naming policy).
+
+### Exit Gate additions
+- Every tracker write has approved exact text/fields/target status.
+- Report resulting issue keys, comment links, and board state.
+- No credentials are printed or persisted.
 
 ## PRIME DIRECTIVE — No tracker write without explicit approval
 
@@ -30,7 +41,7 @@ Load and apply [`AGENTS.md`](../../AGENTS.md) — especially **§12 Definition o
    structured tools (e.g. get issue, search by JQL, create issue/sub-task, add comment, transition
    issue). This is the safe default (OAuth, no token on disk).
 2. **Fallback — tracker REST API via `curl`.** If no MCP is available, call the REST API using
-   **environment variables only** — never hardcode credentials (§13):
+   **environment variables only** — never hardcode credentials:
    - `TRACKER_BASE_URL`, `TRACKER_EMAIL`, `TRACKER_API_TOKEN`.
    - Auth: HTTP Basic with `"$TRACKER_EMAIL:$TRACKER_API_TOKEN"`. Example read:
      `curl -s -u "$TRACKER_EMAIL:$TRACKER_API_TOKEN" "$TRACKER_BASE_URL/rest/api/3/issue/KEY-123"`.
@@ -41,16 +52,16 @@ Load and apply [`AGENTS.md`](../../AGENTS.md) — especially **§12 Definition o
 ### 1. Read tasks from a story
 - Fetch the story (and its existing sub-tasks/links). Extract the **acceptance criteria** and the
   concrete tasks/work items implied by it. Summarize them clearly for the user.
-- Capture the **ticket id + title** so the feature branch can follow §14 when a ticket exists:
-  `test/<ticket-id>-<feature-kebab>` (e.g. `test/123-add-checkout-smoke-flow`). If there is no
+- Capture the **ticket id + title** so the feature branch can follow the branch policy when a ticket exists:
+  pattern from `PROJECT.md` (e.g. `test/123-add-checkout-smoke-flow`). If there is no
   ticket, use the feature name only. Branch creation itself is the `git-workflow` agent's job.
 
 ### 2. Plan the change (hand off to the planner)
 - Hand the extracted requirements to `playwright-test-planner` to produce a clean, pattern-driven
-  plan in `test-plan.md`. Treat the plan as the basis for sizing the work.
+  plan in the plan file from `PROJECT.md`. Treat the plan as the basis for sizing the work.
 
 ### 3. Split into sub-tasks **if the PR size requires it**
-- Judge scope against §14 (changes should be reviewable quickly; refactor XOR feature). If the work
+- Judge scope against repository workflow policy (changes should be reviewable quickly; refactor XOR feature). If the work
   is too large for one reasonable PR, **propose** a breakdown into sub-tasks (each independently
   deliverable and reviewable).
 - **Show the proposed sub-tasks (summary + description + parent) and ask for approval.** Only after
@@ -58,7 +69,7 @@ Load and apply [`AGENTS.md`](../../AGENTS.md) — especially **§12 Definition o
 
 ### 4. Status comments
 - Keep the item informed by posting **status comments** (e.g. "planning done — plan in
-  test-plan.md…",
+  <plan-file-from-PROJECT.md>…",
   "implementation in progress", "in code review — PR #123"). **Draft the comment, show it, wait for
   approval, then post.**
 
@@ -78,6 +89,6 @@ the resulting board state.
 ## Never
 
 - Never create/edit issues or sub-tasks, comment, or transition an item without explicit approval.
-- Never print or log credentials; read them from environment variables (§13).
+- Never print or log credentials; read them from environment variables.
 - Never over-split: only break down work the PR size genuinely requires.
 - Never invent acceptance criteria — if a story is ambiguous, ask the user.

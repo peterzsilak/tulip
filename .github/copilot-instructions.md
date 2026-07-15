@@ -1,18 +1,14 @@
 # GitHub Copilot Instructions — Playwright Test Automation
 
-> Quick-reference index. The authoritative rules live in [`AGENTS.md`](../AGENTS.md).
-> Always load and apply `AGENTS.md` before generating, refactoring, or reviewing any test code.
+> Quick-reference index. The authoritative coding/testing rules live in [`CODING_STANDARDS.md`](../CODING_STANDARDS.md).
+> Always load and apply `CODING_STANDARDS.md` before generating, refactoring, or reviewing any test code.
 
 ---
 
 ## Mandatory Reading (Source of Truth)
 
 Before producing any code or test plan, you **MUST** load and apply
-[`AGENTS.md`](../AGENTS.md) — the operational charter covering locator strategy,
-Page Object architecture, fixture chain (dependency injection), assertion
-standards, Clean Code mandates, design-pattern guidance, the anti-pattern
-blocklist, and the Definition of Done. If a rule elsewhere conflicts with
-`AGENTS.md`, **`AGENTS.md` wins**.
+[`AGENT_SHARED_CONTRACT.md`](../AGENT_SHARED_CONTRACT.md).
 
 ---
 
@@ -25,44 +21,19 @@ blocklist, and the Definition of Done. If a rule elsewhere conflicts with
 
 ---
 
-## Hard Rules (full details in `AGENTS.md`)
+## Hard Rule Delegation
 
-### Locators
-- Priority: **`getByTestId`** → role/text → scoped CSS → `.or()` fallback chain.
-- Every locator scoped to a Page Object root, **never** raw `page.locator(...)` in tests.
-- **No XPath. No `nth(n)` magic numbers.**
+- Coding and test-automation rules are defined **only** in `CODING_STANDARDS.md`.
+- Do not restate or reinterpret coding rules here; reference the exact `CODING_STANDARDS.md` section.
+- Project-dependent values are defined **only** in `PROJECT.md`.
+- Do not hardcode paths/commands/branches in agent logic; read them from `PROJECT.md`.
+- Process/orchestration/approval policy is defined in `AGENTS.md`.
+- Shared boundary/checklist text for agents is defined in `AGENT_SHARED_CONTRACT.md`.
 
-### Page Objects & Design Patterns
-- Page Object Model for every page/widget; reusable widgets extend `ElementContainer<T>`.
-- Cross-page workflows use the **Controller pattern**.
-- **Max 300 lines per PO**; methods **≤ 20 lines**, **≤ 4 parameters**.
-- No business logic and no assertions in POs — tests own assertions.
-- Introduce Factory/Strategy/Builder only when **≥3 implementations** exist (KISS/YAGNI).
+## Tool Mapping Note
 
-### Fixtures (Dependency Injection)
-- All POs, Controllers, and Services injected via the fixture chain.
-- **Never** `new PageObject(page)` in a test file.
-
-### Tests
-- Tags from `TestTags`: scope (`@smoke|@sanity|@regression`) + platform (`@desktop|@mobile`).
-- Arrange–Act–Assert structure; one behavior per test; fully independent.
-- Every assertion has a **context message**.
-- Web-first assertions only; never `locator.isVisible()`.
-
-### Timeouts
-- **Forbidden:** `page.waitForTimeout()`. Named timeouts from a `TimeConfig` enum.
-- Never wait for `networkidle` or use deprecated APIs.
-
-### Type Safety
-- **No `any`.** Use interfaces or generics. `readonly` locators. Strict enums.
-
-### Static Quality Gates (mandatory)
-- Code must pass **`npm run typecheck`** (strict `tsc --noEmit`) and **`npm run lint`** (ESLint flat
-  config + `eslint-plugin-playwright`) with **zero errors**. `npm run check` runs both; CI enforces them.
-- Fix the code, never disable a rule to silence a real violation.
-
-### Secrets
-- **Never** commit secrets. Read credentials from environment variables only.
+- Agent tool names in `.github/agents/*.agent.md` describe logical capabilities.
+- At runtime, always use the tools actually available in the current host/session.
 
 ## Agent Team (`.github/agents/`)
 
@@ -70,15 +41,15 @@ blocklist, and the Definition of Done. If a rule elsewhere conflicts with
 (plan → generate → heal → verify):
 
 - `playwright-test-lead` — orchestrator; sequences the team and enforces the gates.
-- `playwright-test-planner` — produces a plan under `specs/`.
-- `playwright-test-generator` — implements the plan into `tests/`.
+- `playwright-test-planner` — produces the plan file defined in `PROJECT.md`.
+- `playwright-test-generator` — implements into test/page-object paths defined in `PROJECT.md`.
 - `playwright-test-healer` — fixes failing tests without weakening assertions.
 
 **Review & delivery** — end-of-dev review, git, and PR handling (all gated on your approval):
 
-- `code-reviewer` — local end-of-dev review against `AGENTS.md`; discusses **everything**
+- `code-reviewer` — local end-of-dev review against `CODING_STANDARDS.md`; discusses **everything**
   (what to fix, what to leave) before any change. Never edits or commits.
-- `git-workflow` — update master, rebase, resolve conflicts, Conventional-Commit, squash, push,
+- `git-workflow` — update base branch, rebase, resolve conflicts, Conventional-Commit, squash, push,
   open PR. Confirms before any action in your name.
 - `pr-reviewer` — checks out your/others' PRs, reviews to standard, judges incoming comments,
   fixes valid ones (own PR only). Posts inline comments via `gh` **only after your explicit approval**.
@@ -91,9 +62,9 @@ blocklist, and the Definition of Done. If a rule elsewhere conflicts with
   MCP-first (Atlassian MCP), REST-fallback (env vars only).
 
 Agents are loosely coupled: they hand off via **artifacts** (plan file, test files, diffs/PRs), and
-work is Done only when `npm run check` and the test run are green.
+work is Done only when the quality gates and test commands from `PROJECT.md` are green.
 
 ---
 
-**Reminder:** This file is an index. The authoritative rules live in
-[`AGENTS.md`](../AGENTS.md). Always consult it before producing code or plans.
+**Reminder:** This file is an index. The authoritative coding standards live in
+[`CODING_STANDARDS.md`](../CODING_STANDARDS.md). Always consult it before producing code or plans.

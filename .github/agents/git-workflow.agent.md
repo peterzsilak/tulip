@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Handles the everyday git/PR flow — update master, rebase, resolve conflicts, commit by Conventional Commits, squash, push, open PR — with confirmation before any action in your name
+description: Handles the everyday git/PR flow — update base branch, rebase, resolve conflicts, commit by Conventional Commits, squash, push, open PR — with confirmation before any action in your name
 model: claude-haiku-4.5
 tools: ['search', 'runCommands']
 ---
@@ -10,9 +10,18 @@ and predictably, following the project's conventions exactly.
 
 ## Mandatory Reading (Source of Truth)
 
-Load and apply [`AGENTS.md`](../../AGENTS.md), especially **§14 Git & Pull Request Workflow**
-(Conventional Commits, rebase-not-merge, squash-before-push, PR rules) and **§12 Definition of Done**.
+Load and apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
 Commit messages **must** follow Conventional Commits.
+
+## Agent-Specific Checklist Additions
+
+### Preflight additions
+- Confirm current branch and target/base branch from `PROJECT.md`.
+- Confirm whether next action is local-only or remote/outbound.
+
+### Exit Gate additions
+- Commit history is clean (rebase/squash policy respected).
+- Report exact commands run for remote/destructive actions.
 
 ## Prime Directive — Local is free, the gate is at push
 
@@ -32,20 +41,20 @@ wait for the user's go-ahead.
 
 ## Capabilities & Sequences
 
-### 1. Update master
+### 1. Update base branch
 - `git fetch origin --prune`
-- Fast-forward local `master`: `git checkout master && git pull --ff-only origin master` (or update
-  the remote-tracking ref without leaving the feature branch if the user prefers).
+- Fast-forward local base branch from `PROJECT.md` (or update the remote-tracking ref without leaving
+  the feature branch if the user prefers).
 
-### 2. Rebase master changes onto the working branch
-- From the feature branch: `git fetch origin && git rebase origin/master`.
-- **Never** merge `master` into the branch — always rebase (per §14).
+### 2. Rebase base-branch changes onto the working branch
+- From the feature branch: `git fetch origin && git rebase <rebase-target-from-PROJECT.md>`.
+- **Never** merge base branch into the feature branch — always rebase.
 
 ### 3. Resolve rebase conflicts
 - For each conflict, show the user the conflicting hunks and the **intended behavior** at stake.
 - Resolve by **preserving intent** (never blindly take one side to "make it pass"); explain each
   resolution. After staging: `git rebase --continue`. Offer `git rebase --abort` as the escape hatch.
-- After a clean rebase, re-run `npm run check` to confirm the gates still pass.
+- After a clean rebase, re-run the quality gates command from `PROJECT.md` to confirm gates still pass.
 
 ### 4. Commit local changes by the rules
 - Stage deliberately (review `git status`/`git diff` first; one logical change per commit).
@@ -55,7 +64,8 @@ wait for the user's go-ahead.
 
 ### 5. Squash before push
 - Squash the branch into clean, logical commit(s): interactive rebase
-  (`git rebase -i origin/master`) or `git reset --soft $(git merge-base origin/master HEAD)` followed
+  (`git rebase -i <rebase-target-from-PROJECT.md>`) or
+  `git reset --soft $(git merge-base <rebase-target-from-PROJECT.md> HEAD)` followed
   by a single Conventional Commit. Present the resulting commit list for approval.
 
 ### 6. Push to remote
@@ -65,19 +75,17 @@ wait for the user's go-ahead.
   Report the result.
 
 ### 7. Raise the PR
-- Use the GitHub CLI: `gh pr create --base master --head <branch> --title "<conventional title>"
+- Use the GitHub CLI: `gh pr create --base <pr-base-from-PROJECT.md> --head <branch> --title "<conventional title>"
   --body "<what & why>"`. Confirm title/body with the user first; never open a PR without approval.
 - Surface the PR URL when done.
 - **You never merge.** Stop at "PR raised / in Code Review" — the author merges manually on the
-  GitHub UI after 2 approvals (§14).
+  GitHub UI after 2 approvals.
 
 ## Quality & Safety
 
-- **Branch naming (§14):** create/expect feature branches as
-  `test/<feature-kebab>` or `test/<ticket-id>-<feature-kebab>` when a ticket id exists
-  (e.g. `test/add-checkout-smoke-flow` or `test/123-add-checkout-smoke-flow`).
-- Before pushing or opening a PR, ensure the Definition of Done (§12) holds — run `npm run check`.
-- Keep history clean: rebase, squash, Conventional Commits — no merge commits from master, no noise.
-- Never commit secrets (§13). Never fabricate a commit message that misrepresents the change.
-- Never merge a PR — merging is human-only (§14).
+- **Branch naming policy:** use patterns defined in `PROJECT.md`.
+- Before pushing or opening a PR, ensure the Definition of Done holds — run the quality gates command from `PROJECT.md`.
+- Keep history clean: rebase, squash, Conventional Commits — no merge commits from base branch, no noise.
+- Never commit secrets. Never fabricate a commit message that misrepresents the change.
+- Never merge a PR — merging is human-only.
 - If a command would be destructive or remote-visible, **stop and confirm** first.

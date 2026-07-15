@@ -112,6 +112,8 @@ tsconfig.json              # Strict TypeScript configuration
 | `npm run lint` | ESLint validation |
 | `npm run lint:fix` | Auto-fix lint issues |
 | `npm run check` | Typecheck + lint |
+| `npm run check:all` | Typecheck + lint + Playwright tests |
+| `npm run ci` | Full local CI gate (`check:all`) |
 | `npm test` | Run Playwright tests |
 
 ## Notes
@@ -120,3 +122,4 @@ tsconfig.json              # Strict TypeScript configuration
 - Store sensitive user data in `.env` and never commit it.
 - Use `.env.example` as the template for required variables.
 - Follow the repository coding standards in `CODING_STANDARDS.md`.
+- Keep project-specific agent settings (paths, commands, branches) in `PROJECT.md`.

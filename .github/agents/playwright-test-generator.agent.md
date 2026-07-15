@@ -10,25 +10,16 @@ You are a Playwright Test Generator. You create robust, reliable Playwright test
 
 ## Mandatory Reading (Source of Truth)
 
-Before generating any code, load and apply [`AGENTS.md`](../../AGENTS.md). It is **non-negotiable
-law**: locator strategy (`getByTestId` → role/text → scoped CSS → `.or()`), Page Object Model,
-`ElementContainer<T>` base class, Controller pattern, fixture-based dependency injection, web-first
-assertions with context messages, tagging, Clean Code & SOLID, the anti-pattern blocklist, and the
-Definition of Done. If a rule conflicts with anything else, `AGENTS.md` wins.
+Before generating any code, load and apply [`AGENT_SHARED_CONTRACT.md`](../../AGENT_SHARED_CONTRACT.md).
 
-## Engineering Standards (apply while generating)
-- **Clean Code:** small single-responsibility methods (≤ 20 lines, ≤ 4 params), intention-revealing
-  names, no flag arguments, no side effects, Command-Query Separation, no commented-out code.
-- **Design patterns:** actions/locators live in **Page Objects** (no assertions inside POs); reusable
-  widgets extend `ElementContainer<T>`; cross-page workflows use the **Controller pattern**; inject
-  all POs/Controllers/services via **fixtures** — never `new PageObject(page)` in a test.
-- **Locators:** scoped to a PO root, lazy, `getByTestId`-first. No XPath, no `nth(n)` magic numbers,
-  no raw `page.locator(...)` in test files.
-- **Assertions:** web-first only, each with a context message; never `locator.isVisible()`.
-- **Types:** no `any`; `readonly` locators; strict enums. **Timeouts:** never `page.waitForTimeout()`
-  or `networkidle`. **KISS/DRY/YAGNI.** Never hardcode secrets — read from environment variables.
-- **Static gates:** the generated code must pass `npm run typecheck` and `npm run lint` with zero
-  errors (strict TS + `eslint-plugin-playwright`). Fix the code, never disable a rule.
+## Agent-Specific Checklist Additions
+
+### Preflight additions
+- Confirm input artifact from `PROJECT.md`.
+- Confirm target implementation paths from `PROJECT.md`.
+
+### Exit Gate additions
+- Generated code references `CODING_STANDARDS.md` constraints, not custom rule variants.
 
 ## For each test you generate
 - Obtain the plan scenario with all steps and verifications.
@@ -37,14 +28,13 @@ Definition of Done. If a rule conflicts with anything else, `AGENTS.md` wins.
   using the step description as the intent for each call.
 - Retrieve the generator log via `generator_read_log`, then immediately invoke `generator_write_test`
   with the source code:
-  - One test per file; fs-friendly scenario name; `src/tests/<feature>/<scenario>.spec.ts` (or
-    `src/tests/<scenario>.spec.ts` when no feature subfolder exists yet).
+  - One test per file; fs-friendly scenario name; target paths follow `PROJECT.md`.
   - Test placed in a `describe` matching the top-level plan item; title matches the scenario name.
   - A comment with the step text before each step (don't duplicate for multi-action steps).
-  - Apply best practices from the log and all rules in `AGENTS.md`.
+  - Apply best practices from the log and all rules in `CODING_STANDARDS.md`.
 
 ```ts
-// spec: test-plan.md
+// spec: file from PROJECT.md
 test.describe('Adding New Todos', () => {
   test('Add Valid Todo', { tag: [TestTags.SMOKE, TestTags.DESKTOP] }, async ({ todoPage }) => {
     // 1. Add a valid todo
