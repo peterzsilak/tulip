@@ -41,7 +41,7 @@ npx playwright test --project=chromium
 Open the HTML report:
 
 ```bash
-npx playwright show-report
+npm run show-report
 ```
 
 ## Architecture
@@ -92,16 +92,16 @@ classDiagram
 
 ```text
 src/
-├── config/                # Enums, credentials, env loader, shared config
-├── fixture/               # Playwright fixtures and dependency injection
-├── page-objects/          # Page Objects and element containers
-│   └── element-containers/# Reusable widget containers
-└── tests/                 # Playwright specs and setup tests
-.github/                   # Workflows, instructions, and local agent assets
-playwright.config.ts       # Playwright runner configuration
-eslint.config.mjs          # ESLint flat config
-tsconfig.json              # Strict TypeScript configuration
-.env.example               # Environment template
+├── config/                  # Enums, credentials, env loader, shared config
+├── fixture/                 # Playwright fixtures and dependency injection
+├── page-objects/            # Page Objects and element containers
+│   └── element-containers/  # Reusable widget containers
+└── tests/                   # Playwright specs and setup tests
+.github/                     # Workflows, instructions, and local agent assets
+playwright.config.ts         # Playwright runner configuration
+eslint.config.mjs            # ESLint flat config
+tsconfig.json                # Strict TypeScript configuration
+.env.example                 # Environment template
 ```
 
 ## Scripts
@@ -112,9 +112,28 @@ tsconfig.json              # Strict TypeScript configuration
 | `npm run lint` | ESLint validation |
 | `npm run lint:fix` | Auto-fix lint issues |
 | `npm run check` | Typecheck + lint |
+| `npm run pretest` | Enforce `check` before test execution |
 | `npm run check:all` | Typecheck + lint + Playwright tests |
 | `npm run ci` | Full local CI gate (`check:all`) |
 | `npm test` | Run Playwright tests |
+| `npm run show-report` | Open Playwright HTML report |
+
+## Engineering governance docs
+
+The repository uses a split single-source-of-truth model:
+
+- `CODING_STANDARDS.md` — coding/test automation standards (TypeScript + Playwright)
+- `AGENTS.md` — workflow/process/approval policy
+- `PROJECT.md` — project-specific values (paths, commands, branch defaults)
+- `.github/agents/AGENT_SHARED_CONTRACT.md` — shared agent contract and load order
+
+## Agent system
+
+Project agents are defined in `.github/agents/*.agent.md` and reusable skills in
+`.github/skills/*/SKILL.md`.
+
+- Agents orchestrate planning, generation, healing, review, git/PR flow, and tracker workflow.
+- Skills provide focused implementation playbooks (locators, assertions, fixtures, POs, etc.).
 
 ## Notes
 

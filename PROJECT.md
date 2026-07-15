@@ -37,7 +37,7 @@ When starting a new project, update this file first.
 ## Runtime / CI
 
 - Workflow file: `.github/workflows/playwright.yml`
-- CI runs documentation consistency + static gates + Playwright tests.
+- CI runs static gates + Playwright tests.
 
 ## Required Environment Variables
 
