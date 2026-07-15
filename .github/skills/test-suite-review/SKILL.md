@@ -10,8 +10,7 @@ Use `CODING_STANDARDS.md` as the review rubric and `AGENTS.md` for process polic
 High signal-to-noise: flag real problems (bugs, fragility, rule violations), not style nits.
 
 ## Review checklist (Definition of Done)
-- **Static gates:** `npm run typecheck` and `npm run lint` both pass with zero errors; no unjustified
-  inline `eslint-disable`.
+- **Static gates:** commands from `PROJECT.md` pass; no unjustified inline `eslint-disable`.
 - **Architecture:** POs expose actions/locators only (no assertions/business logic); reusable widgets
   extend `ElementContainer<T>`; cross-page flows use a Controller; everything injected via fixtures
   (no `new PageObject(page)` in specs).
@@ -22,11 +21,11 @@ High signal-to-noise: flag real problems (bugs, fragility, rule violations), not
   services don't import POs).
 - **Locators:** `getByTestId`/role-first, scoped to a PO root; no raw `page.locator` in specs, no
   XPath, no `nth(n)` magic numbers.
-- **Assertions:** web-first only, each with a context message; no `locator.isVisible()`/`expect(await…)`.
+- **Assertions:** apply the canonical assertion rules; no `locator.isVisible()`/`expect(await…)`.
 - **Tests:** scope + platform tags; AAA structure; independent & idempotent; no shared mutable state.
-- **Timeouts:** no `page.waitForTimeout()`, no `networkidle`; named timeouts from `TimeConfig`.
+- **Timeouts:** no `page.waitForTimeout()`, no `networkidle`; prefer dynamic waits (`expect(...)`, `locator.waitFor()`) over fixed timeout constants.
 - **Types:** no `any`; `readonly` locators; strict enums.
-- **Size:** PO ≤ 300 lines; methods ≤ 20 lines; ≤ 4 params.
+- **Size:** apply the canonical file, method, and parameter limits.
 - **Safety:** no secrets/credentials committed; no production-code change beyond approved test-id
   attribute additions (as configured in `playwright.config.ts`).
 - **Scope:** refactor XOR feature — not both in one change.

@@ -4,6 +4,19 @@ import path from 'path';
 
 dotenv.config({ path: path.resolve(__dirname, '.env'), quiet: true });
 
+function readNonNegativeInteger(name: string, fallback: number): number {
+  const rawValue = process.env[name];
+  if (rawValue === undefined) return fallback;
+
+  const value = Number(rawValue);
+  if (!Number.isInteger(value) || value < 0) {
+    throw new Error(`${name} must be a non-negative integer`);
+  }
+  return value;
+}
+
+const isCi = process.env['CI'] === 'true';
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -13,18 +26,22 @@ const config = defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Run projects in parallel while keeping local resource usage reasonable */
-  workers: 6,
+  workers: readNonNegativeInteger('PLAYWRIGHT_WORKERS', 6),
   /* Fail the build on CI if test.only was left in source. */
-  forbidOnly: Boolean(process.env['CI']),
+  forbidOnly: isCi,
   /* Retry on CI only */
-  retries: process.env['CI'] ? 2 : 0,
+  retries: isCi ? 2 : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env['CI']
+  reporter: isCi
     ? [['github'], ['list'], ['html'], ['junit', { outputFile: 'test-results/junit.xml' }]]
     : [['html'], ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: 'https://www.saucedemo.com/',
+    baseURL: process.env['BASE_URL'] ?? 'https://www.saucedemo.com/',
+    headless: process.env['PLAYWRIGHT_HEADED'] !== 'true',
+    launchOptions: {
+      slowMo: readNonNegativeInteger('PLAYWRIGHT_SLOW_MO', 0),
+    },
     testIdAttribute: 'data-test',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

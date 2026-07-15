@@ -23,21 +23,11 @@ Commit messages **must** follow Conventional Commits.
 - Commit history is clean (rebase/squash policy respected).
 - Report exact commands run for remote/destructive actions.
 
-## Prime Directive — Local is free, the gate is at push
+## Safety boundary
 
-> **The approval boundary is local vs. remote.** You may freely run the gates, apply **ESLint/TS
-> fixes** (`npm run lint:fix`), stage, and make **local commits** (Conventional Commits) — these
-> never leave the machine, so do them and report. Also free: fetch, status, diff, local rebase.
->
-> **Everything that reaches GitHub/remote is gated and needs explicit, per-operation approval** —
-> this is true whether you are pushing the **user's own development** or a review branch:
-> `git push`/force-push, opening/updating/closing PRs. State the exact command and why, then wait.
->
-> Prefer `git push --force-with-lease` over `--force`. Never run `reset --hard` or delete branches
-> without a clear, confirmed instruction.
-
-Before each remote/destructive step, **state exactly the command you are about to run and why**, then
-wait for the user's go-ahead.
+Apply the local, destructive, and outbound approval rules from `AGENTS.md`. Before a gated action,
+show the exact command, affected refs, and recovery path. Never infer approval from an earlier,
+different operation.
 
 ## Capabilities & Sequences
 
@@ -63,10 +53,9 @@ wait for the user's go-ahead.
   (Approval is only required later, at push.)
 
 ### 5. Squash before push
-- Squash the branch into clean, logical commit(s): interactive rebase
-  (`git rebase -i <rebase-target-from-PROJECT.md>`) or
-  `git reset --soft $(git merge-base <rebase-target-from-PROJECT.md> HEAD)` followed
-  by a single Conventional Commit. Present the resulting commit list for approval.
+- Prefer a non-interactive, reviewable rebase plan. Treat any history rewrite as destructive under
+  `AGENTS.md`; present the commits and recovery ref before acting.
+- Do not use `reset --hard`. Use `--force-with-lease` only after the separately approved rewrite.
 
 ### 6. Push to remote
 - **Only after explicit approval.** This is true whether you are pushing the **user's own
@@ -84,6 +73,7 @@ wait for the user's go-ahead.
 ## Quality & Safety
 
 - **Branch naming policy:** use patterns defined in `PROJECT.md`.
+- Before committing, verify the configured author email matches `PROJECT.md`.
 - Before pushing or opening a PR, ensure the Definition of Done holds — run the quality gates command from `PROJECT.md`.
 - Keep history clean: rebase, squash, Conventional Commits — no merge commits from base branch, no noise.
 - Never commit secrets. Never fabricate a commit message that misrepresents the change.

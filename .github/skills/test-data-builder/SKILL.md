@@ -8,31 +8,16 @@ description: Use when a test needs structured input data. Provides the Builder p
 Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
 Use `CODING_STANDARDS.md` for builder/pattern constraints and `PROJECT.md` for paths.
 Build test data with the **Builder pattern** instead of scattering hardcoded literals across tests.
-Apply KISS/YAGNI — add a builder only when the shape is reused or has ≥3 meaningful fields.
+Apply the pattern-introduction threshold from `CODING_STANDARDS.md`.
 
 ## Steps
-1. Create `<config-path-from-PROJECT.md>/test-data/<entity>.builder.ts` (kebab-case).
+1. Create `<entity>.builder.ts` in the test-data path from `PROJECT.md`.
 2. Define a typed model (`interface`, no `any`) and a builder with **sensible defaults** so a valid
    object can be produced with zero arguments.
 3. Expose fluent `with<Field>(value)` methods returning `this`; finish with `build()`.
 4. Keep methods tiny (≤ 20 lines), no side effects, Command-Query Separation.
 5. Tests read like prose: `aTodo().withTitle('Buy milk').completed().build()`.
 6. **No secrets** in defaults — read credentials from environment variables.
-
-## Example
-```ts
-export interface Todo { title: string; completed: boolean; }
-
-export class TodoBuilder {
-  private todo: Todo = { title: 'Default todo', completed: false };
-
-  withTitle(title: string): this { this.todo.title = title; return this; }
-  completed(): this { this.todo.completed = true; return this; }
-  build(): Todo { return { ...this.todo }; }
-}
-
-export const aTodo = (): TodoBuilder => new TodoBuilder();
-```
 
 ## Checklist
 - [ ] Typed model + builder with valid defaults (no `any`)

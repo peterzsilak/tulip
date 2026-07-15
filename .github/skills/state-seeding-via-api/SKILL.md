@@ -15,24 +15,10 @@ Set up preconditions through the fastest reliable layer; reserve the UI for the 
 - Each test seeds its **own** state and cleans up — no shared mutable state between tests.
 
 ## Steps
-1. Put HTTP clients in an API client path defined by your project; expose them through services path
-   conventions from `PROJECT.md`.
+1. Put HTTP clients and services in the paths defined by `PROJECT.md`.
 2. Inject the service via a fixture (see the `fixture-wiring` skill) — never call raw `request` in a spec.
 3. Seed preconditions in the Arrange phase (or a `beforeEach`/worker fixture); tear down what you create.
 4. Keep credentials/tokens in **environment variables**, never in code.
-
-## Example
-```ts
-test('shows seeded todos', { tag: [TestTags.SANITY, TestTags.DESKTOP] },
-  async ({ todoApi, todoPage }) => {
-    // Arrange — seed via API (fast, reliable)
-    await todoApi.create(aTodo().withTitle('Seeded').build());
-
-    // Act + Assert — verify through the UI
-    await todoPage.open();
-    await expect(todoPage.items, 'Seeded todo should be rendered').toHaveCount(1);
-  });
-```
 
 ## Checklist
 - [ ] Preconditions seeded via API/service, not UI navigation

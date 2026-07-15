@@ -6,9 +6,8 @@ description: Use when an element lacks a stable locator hook. Proposes a dot-sep
 # Test ID Attribute Proposal
 
 Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
-Use `CODING_STANDARDS.md` for locator policy. When no `getByTestId`/role locator is reliable, propose
-the attribute configured in `playwright.config.ts` (`use.testIdAttribute`, currently `data-test`)
-instead of resorting to brittle CSS/XPath.
+Use `CODING_STANDARDS.md` for locator policy and `PROJECT.md` for the configured test-id source.
+When no semantic locator is reliable, propose the configured attribute instead of brittle CSS/XPath.
 
 ## Rules
 - Format: **`"component.element"`** — dot-separated, lowercase (e.g. `"todo.input"`,
@@ -24,7 +23,7 @@ instead of resorting to brittle CSS/XPath.
 <input class="new-todo" placeholder="What needs to be done?" />
 
 <!-- after: only the attribute is added -->
-<input class="new-todo" placeholder="What needs to be done?" data-test="todo.input" />
+<input class="new-todo" placeholder="What needs to be done?" {{TEST_ID_ATTRIBUTE}}="todo.input" />
 ```
 
 ## Checklist

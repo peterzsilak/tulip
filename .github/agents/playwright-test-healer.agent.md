@@ -23,6 +23,8 @@ Before changing any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SH
 ### Exit Gate additions
 - Tests are fixed without weakening intent/assertions.
 - MCP-required failures include an MCP evidence block in the remediation summary.
+- The focused test, stability run when applicable, and quality gates are green.
+- The hypothesis log is stored under the agent-artifacts path.
 
 ## Workflow
 1. **Initial Execution** — run the tests with `test_run` to identify failures.
@@ -34,10 +36,11 @@ Before changing any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SH
    changes that broke assumptions.
 5. **Code Remediation** — fix the test: update selectors, fix assertions, improve reliability. For
    inherently dynamic data, use resilient regex-based locators.
-6. **Verification** — rerun after each fix.
+6. **Verification** — rerun after each materially different fix.
 7. **Static gates** — after the tests pass, run the quality gates command from `PROJECT.md`; fix any TS or
    ESLint error you introduced. The change isn't done until both gates are green.
-8. **Iteration** — repeat until the test passes cleanly and the gates are green.
+8. **Iteration** — use the attempt limit from `PROJECT.md`; each attempt must test a different
+   evidence-backed hypothesis.
 
 ## Key principles
 - Be systematic and thorough; document findings and reasoning for each fix.
@@ -45,6 +48,5 @@ Before changing any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SH
   design patterns in `CODING_STANDARDS.md`.
 - Keep changes scope-focused (fix the failure; no unrelated refactors or new features).
 - Fix one error at a time and retest.
-- If an error persists and you are confident the test is correct, mark it `test.fixme()` and add a
-  comment explaining the observed vs. expected behavior. Do not ask questions — do the most
-  reasonable thing to make the test pass.
+- Never add `test.fixme()`, skip a test, weaken an assertion, or increase retries to make the run
+  green. At the attempt limit, preserve evidence and ask the user to choose the next approach.

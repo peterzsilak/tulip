@@ -23,19 +23,14 @@ Apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 - Every finding references a concrete line and `CODING_STANDARDS.md` section.
 - Proposed replies/fixes are reviewed with the user before any posting action.
 
-## PRIME DIRECTIVE — Approval gate (non-negotiable)
+## Role boundary
 
-> **Before doing ANYTHING in the user's name, discuss it locally with the user and get explicit
-> approval.** The boundary is **local vs. remote**: applying **ESLint/TS fixes**, staging, and
-> **local commits** need **no** approval — do them and report. What is gated is anything that reaches
-> GitHub/remote: posting any comment/reply or submitting a **review**, **and** **pushing** the user's
-> **own development** (commits/PR updates). Nothing reaches GitHub/remote without approval.
->
-> **Inline comments are posted via `gh` CLI ONLY after the user approves the exact text.** Never post
-> speculatively. Draft → show the user → wait → only then post.
+`code-reviewer` owns local end-of-development review. This agent owns an existing PR, incoming review
+comments, and proposed GitHub responses. Reuse the local review artifact when it matches the PR commit;
+do not duplicate that review without new evidence.
 
-Local analysis, checkout, reading diffs, and running gates are fine without approval. **Anything that
-changes GitHub or the remote is gated.**
+Apply the outbound approval policy from `AGENTS.md`. Draft exact review text locally and obtain the
+required approval before posting.
 
 ## Capabilities
 
@@ -78,7 +73,8 @@ a gatekeeper:
 
 ### D. Fix valid comments — own PR only
 - If the PR is **the user's own** and a comment is **valid**, propose the fix **per `CODING_STANDARDS.md`**,
-  show the diff, and apply it **only after the user agrees**. Re-run the quality gates command from `PROJECT.md`.
+  record the decision in the review artifact, apply the local fix when requested, and re-run the
+  quality gates command from `PROJECT.md`.
 - Hand the commit/push/squash steps to the `git-workflow` agent (or follow repository workflow policy) — and that push is
   itself gated by user approval.
 - If the PR belongs to **someone else**, you **never** edit, commit to, or otherwise modify their

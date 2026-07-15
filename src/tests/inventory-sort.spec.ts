@@ -1,8 +1,6 @@
-import { expect } from '@playwright/test';
-
 import { ProductSort } from '@/config/product-sort';
 import { testTags } from '@/config/test-tags';
-import { test } from '@/fixture/authenticated.fixture';
+import { expect, test } from '@/fixture/authenticated.fixture';
 
 interface SortCase {
   readonly title: string;

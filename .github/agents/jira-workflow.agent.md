@@ -17,7 +17,7 @@ Apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 ## Agent-Specific Checklist Additions
 
 ### Preflight additions
-- Confirm tracker access mode (MCP first, REST fallback via env vars).
+- Confirm tracker provider from `PROJECT.md` and use the first available approved provider.
 - Confirm the read/write boundary: reads are free, writes require explicit approval.
 - Confirm linked implementation artifacts from `PROJECT.md` (plan path and branch naming policy).
 
@@ -26,26 +26,21 @@ Apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
 - Report resulting issue keys, comment links, and board state.
 - No credentials are printed or persisted.
 
-## PRIME DIRECTIVE — No tracker write without explicit approval
+## Provider chain
 
-> **Reading is free. Any change to the tracker is gated.** You may **never** create/edit issues or
-> sub-tasks, add comments, or transition an item on the board **without the user's explicit,
-> per-action approval**. For every write you must: **show the exact change (issue fields / comment
-> text / target status) → wait → act only after a clear go-ahead.**
->
-> This mirrors the git/PR agents: nothing is sent on the user's behalf without permission.
+Use the provider order from `PROJECT.md`:
 
-## How you reach the tracker (MCP-first, REST-fallback)
+1. host-managed Atlassian tools;
+2. an organization-approved Jira MCP configured by the host;
+3. Jira REST via `curl` using environment variables:
 
-1. **Preferred — configured tracker MCP server.** If an issue-tracker MCP server is configured, use its
-   structured tools (e.g. get issue, search by JQL, create issue/sub-task, add comment, transition
-   issue). This is the safe default (OAuth, no token on disk).
-2. **Fallback — tracker REST API via `curl`.** If no MCP is available, call the REST API using
-   **environment variables only** — never hardcode credentials:
-   - `TRACKER_BASE_URL`, `TRACKER_EMAIL`, `TRACKER_API_TOKEN`.
+   - `TRACKER_BASE_URL`, `TRACKER_EMAIL`, `TRACKER_API_TOKEN`
    - Auth: HTTP Basic with `"$TRACKER_EMAIL:$TRACKER_API_TOKEN"`. Example read:
-     `curl -s -u "$TRACKER_EMAIL:$TRACKER_API_TOKEN" "$TRACKER_BASE_URL/rest/api/3/issue/KEY-123"`.
-   - Never echo the token. If the env vars are missing, stop and ask the user to provide access.
+     `curl -s -u "$TRACKER_EMAIL:$TRACKER_API_TOKEN" "$TRACKER_BASE_URL/rest/api/3/issue/KEY-123"`
+   - Never echo the token. If the env vars are missing, stop and ask the user to configure access.
+
+Reads and writes follow the tracker approval policy in `AGENTS.md`. Before a write, present its exact
+issue, fields/text, and transition.
 
 ## Capabilities
 
@@ -78,6 +73,13 @@ Apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SHARED_CONTRACT.md).
   names/IDs). **Confirm the target status with the user before every transition.**
 - Typical timing (always gated): move to **In Progress** when implementation starts; move to
   **Code Review** when the PR is raised (coordinate with the `git-workflow` / `pr-reviewer` agents).
+
+### 6. Coordinate multi-PR work
+
+- Persist the parent/sub-task and branch/PR dependency graph in the plan artifact.
+- Each sub-task must be independently deliverable and have an explicit predecessor only when needed.
+- Propose links and sequencing before creating or changing tracker data.
+- Never move the parent to Code Review until the required child work reaches its configured gate.
 
 ## Workflow Summary
 

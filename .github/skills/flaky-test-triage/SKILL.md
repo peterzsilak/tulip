@@ -9,12 +9,13 @@ Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
 Use `CODING_STANDARDS.md` for anti-flakiness rules and `PROJECT.md` for commands.
 **Never suppress flakiness** — diagnose the root cause.
 
-## MCP evidence (required)
-For flaky triage, capture MCP evidence using the block from `PROJECT.md` and base the fix on it.
+## Evidence
+For local flaky triage, capture MCP evidence using the block from `PROJECT.md`. In CI, use the
+artifact-equivalent evidence defined there.
 
 ## Diagnosis order
-1. **Reproduce** — run the single test repeatedly (e.g. `--repeat-each=20`) and with `--retries=0` to
-   confirm the flake and read the trace.
+1. **Reproduce** — run the single test using the stability repetition count from `PROJECT.md` and
+   `--retries=0`; confirm the flake and read the trace.
 2. **Classify the cause:**
    - **Timing/race** — assertion runs before the app settles (lazy load, animation, async update).
    - **State pollution** — a previous test or shared data leaked in (not Independent).
@@ -26,8 +27,8 @@ For flaky triage, capture MCP evidence using the block from `PROJECT.md` and bas
    - Make the test **self-seed** fresh state — see `state-seeding-via-api`.
    - Never wait for `networkidle`; never add blanket retries to mask the issue.
 4. **Verify** — rerun repeatedly until consistently green.
-5. **Last resort:** if confident the test is correct but the app is genuinely broken/unstable, mark
-   `test.fixme()` with a comment describing observed vs. expected, and flag the app-side root cause.
+5. **Escalate:** if the application is broken or instability remains, preserve observed-versus-
+   expected evidence and request the explicit quarantine decision defined in `CODING_STANDARDS.md`.
 
 ## Anti-patterns → fix
 | ❌ | ✅ |

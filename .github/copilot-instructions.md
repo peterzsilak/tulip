@@ -1,50 +1,43 @@
 # GitHub Copilot Instructions — Playwright Test Automation
 
-> Quick-reference index. The authoritative coding/testing rules live in [`CODING_STANDARDS.md`](../CODING_STANDARDS.md).
-> Always load and apply `CODING_STANDARDS.md` before generating, refactoring, or reviewing any test code.
+This file is a routing index, not a policy source.
 
----
+## Mandatory reading
 
-## Mandatory Reading (Source of Truth)
+Load `.github/agents/AGENT_SHARED_CONTRACT.md` before planning, generating, healing, or reviewing.
+It delegates authority to:
 
-Before producing any code or test plan, you **MUST** load and apply
-[`AGENT_SHARED_CONTRACT.md`](./agents/AGENT_SHARED_CONTRACT.md).
+- `CODING_STANDARDS.md` for code and test rules;
+- `PROJECT.md` for project-specific values;
+- `AGENTS.md` for workflow and approval policy.
 
----
+## Agent routing
 
-## Engineering Bar
+| Intent | Agent |
+|---|---|
+| Coordinate an end-to-end delivery | `playwright-test-lead` |
+| Explore a flow and produce the plan | `playwright-test-planner` |
+| Implement a planned scenario | `playwright-test-generator` |
+| Diagnose a failing or flaky test | `playwright-test-healer` |
+| Review local working changes | `code-reviewer` |
+| Rebase, commit, push, or open a PR | `git-workflow` |
+| Review a PR or assess review comments | `pr-reviewer` |
+| Read or update Jira work | `jira-workflow` |
 
-- Operate as a **Principal-level Software Engineer**: think in systems, not scripts.
-- **Robert C. Martin's *Clean Code* and *Clean Architecture* are non-negotiable.**
-- **Trace before you act** — find every definition and usage before modifying a symbol.
-- **Zero tolerance for regression** — never change behavior as a side effect of a refactor.
+## Skill routing
 
----
+| Need | Skill |
+|---|---|
+| Assertion or locator | `assertion-style`, `locator-strategy`, `test-id-proposal` |
+| Page Object or widget | `page-object-authoring` |
+| Multi-page UI workflow | `controller-pattern` |
+| Multiple API clients | `facade-pattern` |
+| Fixture dependency injection | `fixture-wiring` |
+| Plan scenario to spec | `spec-to-test` |
+| API setup, data, or mocking | `state-seeding-via-api`, `test-data-builder`, `network-mocking` |
+| Intermittent failure | `flaky-test-triage` |
+| Static gates or review | `lint-and-typecheck`, `test-suite-review` |
+| Bootstrap a project | `project-scaffolding` |
+| Error, timeout, or secret handling | `error-handling`, `timeout-strategy`, `secrets-management` |
 
-## Hard Rule Delegation
-
-- Coding and test-automation rules are defined **only** in `CODING_STANDARDS.md`.
-- Do not restate or reinterpret coding rules here; reference the exact `CODING_STANDARDS.md` section.
-- Project-dependent values are defined **only** in `PROJECT.md`.
-- Do not hardcode paths/commands/branches in agent logic; read them from `PROJECT.md`.
-- Process/orchestration/approval policy is defined in `AGENTS.md`.
-- Shared boundary/checklist text for agents is defined in `.github/agents/AGENT_SHARED_CONTRACT.md`.
-
-## Tool Mapping Note
-
-- Agent tool names in `.github/agents/*.agent.md` describe logical capabilities.
-- At runtime, always use the tools actually available in the current host/session.
-
-## Agent Team (`.github/agents/`)
-
-Agent responsibilities and stage gates are defined in:
-- `AGENTS.md` (process/approval policy),
-- `.github/agents/playwright-test-lead.agent.md` (orchestration),
-- `.github/agents/*.agent.md` (specialist contracts).
-
-Keep this file as an index only to avoid lifecycle duplication/drift.
-
----
-
-**Reminder:** This file is an index. The authoritative coding standards live in
-[`CODING_STANDARDS.md`](../CODING_STANDARDS.md). Always consult it before producing code or plans.
+Agent tool names describe logical capabilities. Use the equivalent tools exposed by the active host.

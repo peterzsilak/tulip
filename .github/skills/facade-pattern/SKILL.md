@@ -5,9 +5,10 @@ description: Use when several API clients (or low-level services) should be expo
 
 # Facade Pattern (API / Service Facade)
 
-Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md).
-Use `CODING_STANDARDS.md` for architecture constraints and `PROJECT.md` for path conventions.
-A Facade gives tests a single, simple surface over a complex subsystem of API clients.
+Apply [`AGENT_SHARED_CONTRACT.md`](../../agents/AGENT_SHARED_CONTRACT.md) and use
+`CODING_STANDARDS.md` for the exact architecture rules.
+
+A Facade gives tests a single, simple surface over multiple API clients or services.
 
 > Related: the **Controller pattern** is the Facade over *UI Page Objects*; this skill is the Facade
 > over *API clients / services*. Use this when test setup needs to talk to several backend resources.
@@ -18,36 +19,9 @@ A Facade gives tests a single, simple surface over a complex subsystem of API cl
 - You want tests to call `api.seedUserWithTodos(...)` instead of orchestrating raw clients.
 
 ## Steps
-1. Put low-level HTTP clients in `api/<resource>.client.ts` (one client = one resource, SRP).
-2. Create the facade in `services/api-facade.ts` (or a domain-named facade). Its constructor receives
-   the clients it composes (injected, not constructed inside).
-3. Expose **high-level, intention-revealing** methods that read like business steps; each delegates to
-   the underlying clients (single level of abstraction, ≤ 20 lines, ≤ 4 params).
-4. **No locators, no assertions** in the facade — it orchestrates API calls only.
-5. Inject the facade via a fixture (see `fixture-wiring`); tests never touch raw clients.
-6. Credentials/tokens from **environment variables** only.
-
-## Example
-```ts
-// api/user.client.ts and api/todo.client.ts each wrap one resource.
-
-export class ApiFacade {
-  constructor(
-    private readonly users: UserClient,
-    private readonly todos: TodoClient,
-  ) {}
-
-  async seedUserWithTodos(name: string, titles: string[]): Promise<void> {
-    const user = await this.users.create({ name });
-    for (const title of titles) {
-      await this.todos.create(user.id, aTodo().withTitle(title).build());
-    }
-  }
-}
-```
-
-## Checklist
-- [ ] One client per resource (SRP); facade composes them
-- [ ] Clients injected, not constructed inside the facade
-- [ ] High-level methods only; no locators/assertions; no `any`
-- [ ] Exposed to tests via a fixture; credentials from env vars
+1. Put one low-level client in one file per resource.
+2. Create the facade in the services path from `PROJECT.md`.
+3. Inject the composed clients through the constructor.
+4. Expose high-level methods only.
+5. Keep locators, assertions, and secrets out of the facade.
+6. Expose it to tests via a fixture.

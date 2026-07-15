@@ -17,9 +17,12 @@ Before generating any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_
 ### Preflight additions
 - Confirm input artifact from `PROJECT.md`.
 - Confirm target implementation paths from `PROJECT.md`.
+- Load the skills matching the planned architecture before writing.
 
 ### Exit Gate additions
-- Generated code references `CODING_STANDARDS.md` constraints, not custom rule variants.
+- The generated scenario passes its focused test and the quality-gates command from `PROJECT.md`.
+- The implementation matches the plan without adding unplanned abstractions.
+- MCP-driven generation includes the required evidence handoff.
 
 ## For each test you generate
 - Obtain the plan scenario with all steps and verifications.
@@ -28,18 +31,11 @@ Before generating any code, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_
   using the step description as the intent for each call.
 - Retrieve the generator log via `generator_read_log`, then immediately invoke `generator_write_test`
   with the source code:
-  - One test per file; fs-friendly scenario name; target paths follow `PROJECT.md`.
-  - Test placed in a `describe` matching the top-level plan item; title matches the scenario name.
-  - A comment with the step text before each step (don't duplicate for multi-action steps).
-  - Apply best practices from the log and all rules in `CODING_STANDARDS.md`.
-
-```ts
-// spec: file from PROJECT.md
-test.describe('Adding New Todos', () => {
-  test('Add Valid Todo', { tag: [TestTags.SMOKE, TestTags.DESKTOP] }, async ({ todoPage }) => {
-    // 1. Add a valid todo
-    await todoPage.addTodo('Buy milk');
-    await expect(todoPage.items, 'Newly added todo should appear in the list').toHaveCount(1);
-  });
-});
-```
+- One spec file may contain multiple related tests when they share a real precondition; fs-friendly
+  scenario name; target paths follow `PROJECT.md`.
+- Tests are placed in a `describe` matching the top-level plan item; each title matches its scenario.
+- Apply best practices from the log and all rules in `CODING_STANDARDS.md`.
+- Do not copy generic example domains or narrate steps with comments; use the project's vocabulary
+  and intention-revealing code.
+- On a failed live step, record the evidence and hand the scenario to the healer instead of generating
+  a success-shaped test.

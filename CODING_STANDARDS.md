@@ -2,7 +2,8 @@
 
 ## Purpose and Scope
 
-This document defines the project's TypeScript + Playwright automation standards at a Senior Automation Engineer quality bar.  
+This document is the single source of truth for TypeScript and Playwright automation standards.
+It targets a Principal SDET engineering bar.
 All new or modified test code must follow these rules.
 
 ## Core Principles
@@ -27,6 +28,9 @@ All new or modified test code must follow these rules.
 - Prefer `type`/`interface` contracts over implicit "shape by usage."
 - Use `readonly` for fields that should not change after construction (for example locators and config values).
 - Use enums or `as const` patterns for fixed string literal sets.
+- Apply KISS/YAGNI: introduce Strategy, Factory, or Builder abstractions only when at least three
+  concrete uses/implementations exist or are committed requirements. One implementation stays
+  concrete.
 
 ### Code Structure and Cleanliness
 
@@ -35,6 +39,8 @@ All new or modified test code must follow these rules.
 - Avoid flag arguments (`doX(true)`); prefer separate intention-revealing methods.
 - Avoid duplicated logic; extract shared helpers/services.
 - Comments are allowed only when they explain **why** (not what).
+- Do not add JSDoc that restates a well-named symbol. Keep only comments that capture non-obvious
+  constraints or decisions.
 
 ### Error Handling
 
@@ -61,19 +67,27 @@ Forbidden:
 - Keep all UI interactions inside Page Object(s).
 - Spec files should express business intent, not low-level click sequences.
 - Page Objects **must not** contain assertions; assertions belong in tests.
-- Use the Controller pattern for cross-page workflows.
+- Page Objects must stay at or below 300 lines; decompose larger files into reusable containers.
+- Reusable widgets extend `ElementContainer<T>`.
+- Use a Controller only for workflows that span multiple pages. Single-page behavior remains in its
+  Page Object.
+- Controllers contain no locators or assertions.
+- Use a service Facade only when a test precondition genuinely composes multiple low-level clients.
 
 ### Fixture-based Dependency Injection
 
 - Tests must not instantiate Page Objects directly (`new ...` in specs is forbidden).
 - Inject Page Objects/services through the fixture chain.
 - Keep dependencies explicit and declared.
+- Consumers receive collaborators through constructor injection; no service locators, singletons, or
+  global mutable state.
+- High-level code depends on focused contracts when behavior has multiple implementations.
 
 ### Assertion Standards
 
 - Web-first assertions are mandatory (`toBeVisible`, `toHaveText`, `toHaveURL`, `toHaveCount`, etc.).
 - Avoid patterns like `expect(await locator.isVisible()).toBe(true)`.
-- Every important assertion should include a short, business-context message.
+- Every assertion must include a short business-context message.
 - Use `expect.soft` deliberately for independent checks.
 
 ### Waiting and Timing
@@ -90,6 +104,8 @@ Forbidden:
 - Tests must be independent and order-agnostic.
 - Prefer API/state seeding for setup over slow UI-only setup flows.
 - Mandatory tagging: scope (smoke/sanity/regression) + platform (desktop/mobile).
+- Do not add step-by-step comments that merely narrate the test. AAA spacing and intention-revealing
+  names express structure.
 
 ### Network and Test Data
 
@@ -115,6 +131,9 @@ Forbidden:
 - Do not accept "retry-only" fixes for flaky tests.
 - Root cause analysis is mandatory: race conditions, unstable locators, state pollution, premature assertions.
 - Re-run to confirm stability after the fix.
+- Agents must not add `test.skip()`, `test.fixme()`, or weaken assertions to obtain a green run.
+- Quarantine is an explicit human decision only. It requires a linked defect, observed-versus-expected
+  context, an owner, and a review/removal condition.
 
 ## Naming Conventions
 
@@ -138,3 +157,4 @@ Forbidden:
 - Locators are stable and maintainable.
 - Assertions validate business value, not implementation details.
 - Quality gates are fully satisfied.
+- Page Objects stay within 300 lines; non-test functions stay within 20 lines and four parameters.

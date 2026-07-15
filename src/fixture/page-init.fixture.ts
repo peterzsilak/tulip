@@ -1,8 +1,8 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 
 import { CartPage } from '@/page-objects/cart-page';
 import { CheckoutCompletePage } from '@/page-objects/checkout-complete-page';
-import { CheckoutPage } from '@/page-objects/chekout-page';
+import { CheckoutPage } from '@/page-objects/checkout-page';
 import { CheckoutSummaryPage } from '@/page-objects/checkout-summary-page';
 import { FooterPage } from '@/page-objects/footer-page';
 import { HeaderPage } from '@/page-objects/header-page';
@@ -51,3 +51,5 @@ export const test = base.extend<CustomFixtures>({
     await use(new FooterPage(page));
   },
 });
+
+export { expect };

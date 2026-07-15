@@ -7,16 +7,19 @@ Playwright test automation framework for Sauce Demo, built with strict TypeScrip
 ```bash
 git clone <repository-url>
 cd tulip
-npm install
+npm ci
+npx playwright install --with-deps
 cp .env.example .env
 ```
 
 Update `.env` with the test credentials:
 
 ```env
-TEST_USERNAME=standard_user
-TEST_PASSWORD=secret_sauce
+TEST_USERNAME=<username>
+TEST_PASSWORD=<password>
 ```
+
+`BASE_URL`, browser mode, slow motion, and worker count can also be overridden in `.env`.
 
 ## Usage
 
@@ -113,6 +116,7 @@ tsconfig.json                # Strict TypeScript configuration
 | `npm run lint` | ESLint validation |
 | `npm run lint:fix` | Auto-fix lint issues |
 | `npm run check` | Typecheck + lint |
+| `npm run mcp:playwright` | Start the repository-pinned Playwright MCP server |
 | `npm run pretest` | Enforce `check` before test execution |
 | `npm run check:all` | Typecheck + lint + Playwright tests |
 | `npm run ci` | Full local CI gate (`check:all`) |
@@ -135,6 +139,8 @@ Project agents are defined in `.github/agents/*.agent.md` and reusable skills in
 
 - Agents orchestrate planning, generation, healing, review, git/PR flow, and tracker workflow.
 - Skills provide focused implementation playbooks (locators, assertions, fixtures, POs, etc.).
+- Agent handoffs use ignored files under `.agent-artifacts/`; production code never depends on them.
+- `.github/copilot-instructions.md` contains the agent and skill routing tables.
 
 ## Playwright MCP (required for local diagnostics)
 
@@ -151,12 +157,16 @@ npx playwright install
 Playwright MCP server command:
 
 ```bash
-npx @playwright/mcp@latest
+npm run mcp:playwright
 ```
 
 Project-level MCP config (checked in):
 
-- `.mcp.json` (single source of truth)
+- `.mcp.json` starts the pinned Playwright MCP package through the npm script.
+
+Tracker access uses host-managed Atlassian tools when available, an organization-approved Jira MCP
+configured in the host, or the REST fallback variables documented in `PROJECT.md`. The repository
+does not install an unmaintained tracker MCP package.
 
 ### VS Code setup
 
@@ -175,6 +185,51 @@ Project-level MCP config (checked in):
 CI does not need to start an MCP server. For MCP-required scenarios, CI uses artifact-based
 equivalent evidence (`test-results/junit.xml`, `playwright-report/`, retry traces), as defined in
 `PROJECT.md`.
+
+## Reusing the agent team
+
+For a new or existing Playwright project, copy the control plane:
+
+```text
+AGENTS.md
+CODING_STANDARDS.md
+PROJECT.md
+.github/copilot-instructions.md
+.github/agents/
+.github/skills/
+```
+
+Then update every project-specific value in `PROJECT.md`. For the complete runnable baseline, also
+adopt `.mcp.json`, `.env.example`, the npm/TypeScript/ESLint/Playwright configuration, and the CI
+workflow. Run:
+
+```bash
+npm ci
+npx playwright install --with-deps
+npm run check
+```
+
+The `project-scaffolding` skill contains portable templates for the base element container, test
+tags, fixture entrypoint, and Page Object. Existing projects map their current structure in
+`PROJECT.md`; they do not need to reorganize solely for the agent team.
+
+## Parallel agents and competing fixes
+
+Writing agents run in separate git worktrees and branches, with separate artifact/report paths,
+ports, credentials, and test-data namespaces. The lead may run independent scenarios or alternative
+fix hypotheses in parallel up to the limit in `PROJECT.md`.
+
+Every competing fix must run the same reproduction, focused tests, stability repetitions, and
+quality gates. The lead selects one result by correctness, determinism, maintainability, and scope;
+candidates are never merged automatically.
+
+## Updating the agent system
+
+1. Change canonical policy only in its owning SoT document.
+2. Update `PROJECT.md` when a project value or runtime integration changes.
+3. Keep agent files role-specific and skills procedural; do not copy canonical rules into them.
+4. Update pinned tool packages deliberately through `package.json` and `package-lock.json`.
+5. Run `npm run check`.
 
 ## Notes
 

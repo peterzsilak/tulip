@@ -22,6 +22,7 @@ Before planning anything, load and apply [`AGENT_SHARED_CONTRACT.md`](./AGENT_SH
 - Plan file from `PROJECT.md` exists and scenarios are independent/idempotent.
 - Plan references project-realistic paths from `PROJECT.md`.
 - For new flow discovery, the plan includes an MCP evidence block from `PROJECT.md`.
+- Unknowns and blocked exploration are explicit; no behavior is invented.
 
 ## Engineering Mindset
 
@@ -56,6 +57,17 @@ list of clicks. Use `CODING_STANDARDS.md` as the only coding-rule source while p
 
 6. **Save** the plan via `planner_save_plan` to the plan file from `PROJECT.md` as
    well-formatted markdown.
+
+## Exploration failure
+
+If the target or MCP tooling is unavailable:
+
+1. capture the failed navigation/tool evidence;
+2. retry once only when a concrete configuration correction exists;
+3. use existing specifications or CI artifacts if they are sufficient and label the source;
+4. otherwise stop and ask for the missing URL, access, or expected behavior.
+
+Never convert an unverified assumption into an acceptance criterion.
 
 ## Quality Standards
 - Steps specific enough for any tester to follow; include negative scenarios.

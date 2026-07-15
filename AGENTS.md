@@ -56,27 +56,49 @@ See the canonical path definitions in `PROJECT.md`.
 
 > Stages are sequential; do not skip failed gates.
 
----
+### 4.1 MCP usage policy
 
-## 4.1 MCP Usage Policy (Process Rule)
+Playwright MCP is required for:
 
-Playwright MCP is a required diagnostic aid in the following cases:
+- flaky/intermittent test triage;
+- locator ambiguity or unstable selector behavior;
+- new flow discovery before finalizing a plan;
+- network/state mismatch between expected and observed behavior.
 
-- flaky/intermittent test triage
-- locator ambiguity or unstable selector behavior
-- new flow discovery before finalizing a plan
-- network/state mismatch between expected and observed behavior
+The stage output includes the MCP evidence block from `PROJECT.md`, and decisions trace to that
+evidence. Local agent runs use MCP; CI uses the artifact-equivalent evidence from `PROJECT.md`.
+MCP does not replace quality, review, or approval gates.
 
-When MCP is required, the stage output must include an **MCP evidence block** (defined in
-`PROJECT.md`) and decisions must trace back to that evidence.
+### 4.2 Artifact handoffs
 
-Execution boundary:
+Agents communicate through artifacts, not assumed chat memory. The canonical plan, implementation,
+diagnostic evidence, review findings, and branch/PR are located using `PROJECT.md`.
 
-- **Local agent runs:** MCP evidence is mandatory for MCP-required scenarios.
-- **CI runs:** MCP server startup is not required. CI must provide artifact-based equivalent evidence
-  (defined in `PROJECT.md`) for diagnosis.
+- A stage must state its input artifact and exit gate.
+- A failed gate returns ownership to the agent responsible for that stage.
+- Review findings are persisted in the agent-artifacts path from `PROJECT.md`.
+- Source code and durable project documentation never depend on files under the agent-artifacts path.
 
-MCP augments the workflow; it does not replace quality gates, review gates, or approval boundaries.
+### 4.3 Failure and escalation policy
+
+- Reproduce before changing behavior.
+- Retry an agent stage only after changing the diagnostic hypothesis or implementation approach.
+- Use the stage-attempt limit from `PROJECT.md`; do not loop indefinitely.
+- If the limit is reached, preserve evidence, stop, and ask the user to choose among clearly described
+  options.
+- Never hide a failure with retries, relaxed gates, skipped tests, or success-shaped fallbacks.
+
+### 4.4 Parallel and competing-solution work
+
+Independent scenarios may run in parallel up to the limit in `PROJECT.md`.
+
+- Each writing agent uses a separate git worktree and branch.
+- Each candidate owns separate plan, report, trace, and agent-artifact paths.
+- Test data, credentials, ports, and mutable external state must be isolated.
+- Work that edits the same artifact or depends on another candidate stays sequential.
+- Competing fixes run the same reproduction, affected tests, stability run, and quality gates.
+- The lead compares correctness, stability, scope, and maintainability; it never combines candidates
+  automatically or selects only because one finished first.
 
 ---
 
@@ -105,8 +127,8 @@ No outbound action is allowed without explicit user approval for that specific a
 - Read credentials only from environment variables.
 - If a secret leak is found, flag it and recommend rotation; do not propagate it.
 - Prefer non-destructive operations.
-- For destructive commands (e.g. force push), require explicit per-action confirmation and use
-  safer variants (`--force-with-lease`).
+- Local history rewriting and destructive commands require explicit per-action confirmation.
+- For force push, require separate approval and use `--force-with-lease`.
 - Never edit another author's PR branch/code directly.
 
 ---
@@ -120,6 +142,8 @@ No outbound action is allowed without explicit user approval for that specific a
 - Git workflow: branch/rebase/commit/push/PR mechanics under approval gates
 - PR reviewer: evaluate comments and propose/submit approved responses
 - Jira workflow: tracker read/write flow with strict approval gates on writes
+- Lead: stage orchestration, artifact verification, failure escalation, and parallel candidate
+  reconciliation
 
 All agents must apply `CODING_STANDARDS.md` for code quality decisions.
 
@@ -142,6 +166,8 @@ A change is done when:
 ### Commit format
 - Use Conventional Commits (`type(scope): imperative summary`).
 - Keep commits logically scoped and honest to the actual change.
+- Use the human author identity defined in `PROJECT.md`; do not attribute authorship to tools or
+  automation.
 
 ### Branching
 - Feature branches only (never direct work on the base branch defined in `PROJECT.md`).

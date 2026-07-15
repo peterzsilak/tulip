@@ -13,10 +13,15 @@ When starting a new project, update this file first.
 - Plan file: `test-plan.md`
 - Tests directory: `src/tests/`
 - Page Objects directory: `src/page-objects/`
+- Element containers directory: `src/page-objects/element-containers/`
+- Controllers directory: `src/page-objects/controllers/`
 - Fixtures directory: `src/fixture/`
 - Services directory: `src/services/`
+- API clients directory: `src/services/clients/`
 - Config directory: `src/config/`
+- Test data directory: `src/config/test-data/`
 - Utils directory: `src/utils/`
+- Agent artifacts directory: `.agent-artifacts/` (local, ignored, never a source dependency)
 
 ## Locator/Test ID Source of Truth
 
@@ -44,12 +49,26 @@ When starting a new project, update this file first.
 
 - Workflow file: `.github/workflows/playwright.yml`
 - CI runs static gates + Playwright tests.
+- Application URL environment variable: `BASE_URL`
+- Default application URL: `https://www.saucedemo.com/`
+- Local Playwright workers: `6`
+- CI Playwright workers: `2`
+- Maximum parallel writing agents: `3`
+- Maximum healer attempts per hypothesis: `3`
+- Flaky-test stability repetitions: `20`
 
 ## MCP Runtime Setup (Local)
 
 - MCP server package: `@playwright/mcp`
-- Recommended command: `npx @playwright/mcp@latest`
+- Runtime command: `npm run mcp:playwright`
 - MCP-required scenarios are defined in `AGENTS.md`.
+
+### Tracker integration
+
+- Preferred provider: host-managed Atlassian tools (`atlassian/*`) when available.
+- Optional provider: an organization-approved Jira MCP server configured by the host.
+- Fallback provider: Jira REST API using the tracker environment variables below.
+- Do not install an unmaintained or vulnerable tracker MCP package to make the fallback work.
 
 ## MCP Evidence Contract
 
@@ -88,3 +107,16 @@ In CI, accept artifact-based evidence for MCP-required scenarios:
   - `TRACKER_BASE_URL`
   - `TRACKER_EMAIL`
   - `TRACKER_API_TOKEN`
+
+## Agent runtime compatibility
+
+- Models in `.github/agents/*.agent.md` are preferred defaults, not project policy.
+- If a named model or logical tool is unavailable, use the closest host-supported equivalent without
+  weakening role boundaries or gates.
+- Logical tools such as `search`, `edit`, `runCommands`, `playwright-test/*`, and `atlassian/*` map to
+  the capabilities provided by the current host.
+
+## Git identity
+
+- Required human author email: `peter.zsilak@gmail.com`
+- Automation and AI tools are not authors or co-authors.

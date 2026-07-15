@@ -1,54 +1,36 @@
 # AGENT_SHARED_CONTRACT.md — Common Agent Contract
 
-Use this file to avoid repeating identical source-of-truth, boundary, and checklist text across agent descriptions.
+Use this contract to keep every specialist thin, portable, and aligned to the same policy.
 
-## Mandatory Reading (Source of Truth)
+## Mandatory load order
 
-Before coding/review/planning work, load and apply this file.
+1. [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md) — coding and test-automation rules.
+2. [`PROJECT.md`](../../PROJECT.md) — project-specific paths, commands, limits, and integrations.
+3. [`AGENTS.md`](../../AGENTS.md) — workflow, approvals, delivery, and escalation.
 
-## Source-of-Truth Boundary
+## Source-of-truth boundary
 
-1. **Coding and test-automation standards** live in [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md).
-2. **Process/workflow/approval policy** lives in [`AGENTS.md`](../../AGENTS.md).
-3. **Project-specific values** (paths, commands, branches, env vars) live in [`PROJECT.md`](../../PROJECT.md).
+- Do not duplicate or reinterpret coding rules outside `CODING_STANDARDS.md`.
+- Do not duplicate or reinterpret workflow policy outside `AGENTS.md`.
+- Do not hardcode project values outside `PROJECT.md`.
+- Agent and skill files contain only role-specific workflow or execution guidance.
+- Resolve conflicts by domain: coding → `CODING_STANDARDS.md`; project value → `PROJECT.md`;
+  process/approval → `AGENTS.md`.
+- If a conflict crosses domains or remains ambiguous, stop and ask the user.
 
-## Required Load Order
+## Preflight
 
-1. Read `CODING_STANDARDS.md`
-2. Read `PROJECT.md`
-3. Read `AGENTS.md`
+- Confirm task scope, input/output artifacts, paths, commands, and limits from `PROJECT.md`.
+- Trace existing definitions and usages before changing a symbol.
+- Check the working tree and preserve unrelated user changes.
+- Identify the required skill(s) and MCP evidence requirement.
+- Confirm the approval boundary before any remote or tracker action.
 
-## Non-Negotiable Rules
+## Exit gate
 
-- Do not duplicate or redefine coding rules outside `CODING_STANDARDS.md`.
-- Do not hardcode project-specific values outside `PROJECT.md`.
-- Do not redefine workflow policy outside `AGENTS.md`.
-- If conflict appears, resolve by domain:
-  - coding conflict → `CODING_STANDARDS.md` wins
-  - project-value conflict → `PROJECT.md` wins
-  - process/policy conflict → `AGENTS.md` wins
-
-## Rule Application Boundary (Shared)
-
-- **Coding decisions** come from `CODING_STANDARDS.md`.
-- **Process/workflow/approval decisions** come from `AGENTS.md`.
-- **Project-specific values** come from `PROJECT.md`.
-- Do not invent local rule variants.
-
-## Execution Checklists (Shared Baseline)
-
-### Preflight (baseline)
-
-- Load this contract and apply its source-of-truth split.
-- Confirm scope and artifacts/commands/paths from `PROJECT.md`.
-- Confirm approval boundary from `AGENTS.md` before any remote/tracker action.
-- If the task matches MCP-required scenarios from `AGENTS.md`, prepare MCP evidence per `PROJECT.md`.
-
-### Exit Gate (baseline)
-
-- Keep decisions traceable to the correct source-of-truth file.
-- Run/verify quality gates from `PROJECT.md` when code changes are made.
-- Do not perform push/PR/comment/tracker-write action without explicit user approval.
-- For MCP-required scenarios, include the MCP evidence block from `PROJECT.md` in the handoff/output.
-- In CI contexts, use artifact-based equivalent evidence from `PROJECT.md` when MCP server access is
-  unavailable.
+- Verify the role-specific output artifact exists and is complete.
+- Run the project commands required for the changed scope.
+- Persist handoff evidence in the project-defined artifact path when another agent needs it.
+- Include MCP or CI-equivalent evidence for scenarios required by `AGENTS.md`.
+- Report unresolved risks plainly; never claim success for a failed or skipped gate.
+- Perform no outbound action without the approval required by `AGENTS.md`.

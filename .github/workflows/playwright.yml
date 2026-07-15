@@ -25,6 +25,7 @@ jobs:
     env:
       TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
       TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+      PLAYWRIGHT_WORKERS: 2
     steps:
     - uses: actions/checkout@v5
     - uses: actions/setup-node@v5
